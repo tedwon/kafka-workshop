@@ -1,1 +1,5 @@
-== hello-jboss-remoting
+= JBUG - Apache Kafka workshop
+
+== Prerequisites
+
+* Maven version +3.5.3
