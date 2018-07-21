@@ -1,0 +1,21 @@
+== Kafka Connect
+
+* http://kafka.apache.org/documentation.html#connect_overview
+* http://kafka.apache.org/documentation.html#connectapi
+* https://www.confluent.io/product/connectors/
+* https://docs.confluent.io/current/connect/quickstart.html
+* https://docs.confluent.io/current/connect/userguide.html
+* https://docs.confluent.io/current/connect/devguide.html#connect-devguide
+
+== Kafka Connect
+
+[incremental="true"]
+image::https://cdn2.hubspot.net/hubfs/540072/blog-files/Kafka_and_the_age_of_streaming_data_integration/Kafka_and_the_age_of_streaming_data_integration_image_kafka_connect.png[title="Kafka Connect"]
+
+== Kafka Connect
+
+[incremental="true"]
+image::https://cdn2.hubspot.net/hubfs/540072/blog-files/Kafka_and_the_age_of_streaming_data_integration/Kafka_and_the_age_of_streaming_data_integration_image_sources_sinks.png[title="Kafka Connect"]
+
+
+

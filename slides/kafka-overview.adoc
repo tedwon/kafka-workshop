@@ -1,0 +1,140 @@
+== Kafka is
+
+[incremental="true"]
+* Distributed Publish-Subscribe Messaging System
+* Distributed Streaming Platform
+* Data Hub
+
+== Before Kafka
+
+[incremental="true"]
+image::images/kafka_00.png[title="Kafka"]
+
+== After Kafka
+
+[incremental="true"]
+image::images/kafka_01.png[title="Kafka"]
+
+[incremental="true"]
+* Data Hub
+
+== Kafka High-level View
+
+[incremental="true"]
+image::images/kafka_02.png[title="Kafka"]
+
+== Kafka is
+
+[incremental="true"]
+* Pub-sub 방식의 고성능 분산 메시징 시스템
+* LinkedIn SNA팀에서 개발하고 서비스에 사용 중
+** 2011년 시작
+** Scala, Java 구현
+* LinkedIn에서 2014년 기준 300개가 넘는 브로커 운영
+** 18,000개의 토픽
+** 하루에 2,200억 메세지 처리 
+
+== Kafka Three Design Principles
+
+[incremental="true"]
+* Very simple API for both producers and consumers
+* Low overhead in network transferring as well as on-disk storage
+* Scaled out architecture from the beginning
+
+== Kafka Performance
+
+[incremental="true"]
+image::images/kafka_03.png[title="Kafka"]
+
+== Kafka Overview
+
+[incremental="true"]
+* 사용하기 쉬운 API, 설정 옵션 제공
+* Zero-copy 방식으로 고성능 읽기 기능 제공
+* Scale-out 하기 좋은 시스템
+* 배치 단위 전송, 압축 기능 제공
+* Producer측에서 파티셔너를 구현해 분산 저장 조절 가능
+* Kafka + Processing 구조로 활용
+** Storm, Spark Streaming
+* 스트림 처리 KSQL 제공
+
+== High-level Architecture
+
+[incremental="true"]
+image::images/kafka_04.png[title="Kafka"]
+
+== Producing & Consuming
+
+[incremental="true"]
+image::images/kafka_06.png[title="Kafka"]
+
+[incremental="true"]
+* 네모 박스 하나가 하나의 process
+
+== Producing & Consuming
+
+[incremental="true"]
+image::images/kafka_05.png[title="Kafka"]
+
+[incremental="true"]
+* 화살표선 하나가 하나의 thread
+
+== Kafka Log
+
+[incremental="true"]
+image::http://kafka.apache.org/11/images/kafka_log.png[title="Kafka Overview"]
+
+== Latest Kafka
+
+[incremental="true"]
+image::http://kafka.apache.org/11/images/kafka-apis.png[title="Kafka Overview"]
+
+//image::http://kafka.apache.org/11/images/tracking_high_level.png[title="Kafka Overview"]
+//image::http://kafka.apache.org/11/images/producer_consumer.png[title="Kafka Overview"]
+//image::http://kafka.apache.org/11/images/log_anatomy.png[title="Kafka Overview"]
+//image::http://kafka.apache.org/11/images/log_consumer.png[[alt=Flower,width=10%,height=10%]
+//image::http://kafka.apache.org/11/images/consumer-groups.png[title="Kafka Overview"]
+
+== Kafka Log
+
+[incremental="true"]
+image::http://kafka.apache.org/11/images/log_cleaner_anatomy.png[title="Kafka Overview"]
+
+== Kafka Log
+
+[incremental="true"]
+image::http://kafka.apache.org/11/images/log_compaction.png[title="Kafka Overview"]
+
+//image::http://kafka.apache.org/11/images/streams-concepts-topology.jpg[title="Kafka Overview"]
+
+== Kafka Mirroring
+
+[incremental="true"]
+image::http://kafka.apache.org/11/images/mirror-maker.png[title="Kafka Overview"]
+
+== Kafka Mirroring
+
+[incremental="true"]
+image::http://kafka.apache.org/11/images/kafka_multidc.png[title="Kafka Overview"]
+
+== Kafka Mirroring
+
+[incremental="true"]
+image::http://kafka.apache.org/11/images/kafka_multidc_complex.png[title="Kafka Overview"]
+
+== Kafka Streams
+
+[incremental="true"]
+image::http://kafka.apache.org/11/images/streams-architecture-overview.jpg[title="Kafka Overview"]
+
+//image::http://kafka.apache.org/11/images/streams-architecture-tasks.jpg[title="Kafka Overview"]
+
+== Kafka Streams
+
+[incremental="true"]
+image::http://kafka.apache.org/11/images/streams-architecture-states.jpg[title="Kafka Overview"]
+
+== Keywords
+
+* leader and followers
+* message rewind/replay

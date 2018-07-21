@@ -1,0 +1,92 @@
+== Kafka QuickStart
+
+* Kafka 실습
+* http://kafka.apache.org/quickstart
+
+[source,sh]
+----
+bin/zookeeper-server-start.sh config/zookeeper.properties
+
+bin/kafka-server-start.sh config/server.properties
+
+bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test
+
+bin/kafka-topics.sh --list --zookeeper localhost:2181
+
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test --from-beginning
+
+bin/kafka-console-producer.sh --broker-list localhost:9092 --topic test
+----
+
+=== zookeeper
+
+* http://epicdevs.com/23?category=460351
+* Downalod Zookeeper http://mirror.navercorp.com/apache/zookeeper/stable/
+* http://zookeeper.apache.org/doc/r3.4.13/zookeeperStarted.html
+
+[source,sh]
+----
+bin/zkCli.sh -server 127.0.0.1:2181
+
+ls /
+ls /brokers
+ls /brokers/ids
+
+get /brokers/ids
+get /brokers/ids/0
+
+ls /brokers/topics
+ls /brokers/topics/test
+ls /brokers/topics/test/partitions
+ls /brokers/topics/test/partitions/0
+ls /brokers/topics/test/partitions/0/state
+get /brokers/topics/test/partitions/0/state
+----
+
+
+=== Step 6: Setting up a multi-broker cluster
+
+[source,sh]
+----
+cp config/server.properties config/server-1.properties
+cp config/server.properties config/server-2.properties
+
+
+config/server-1.properties:
+    broker.id=1
+    listeners=PLAINTEXT://127.0.0.1:9093
+    log.dir=/tmp/kafka-logs-1
+ 
+config/server-2.properties:
+    broker.id=2
+    listeners=PLAINTEXT://127.0.0.1:9094
+    log.dir=/tmp/kafka-logs-2
+
+
+bin/kafka-server-start.sh config/server-1.properties
+
+bin/kafka-server-start.sh config/server-2.properties
+
+bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 3 --partitions 1 --topic my-replicated-topic
+
+bin/kafka-topics.sh --describe --zookeeper localhost:2181 --topic my-replicated-topic
+
+bin/kafka-topics.sh --describe --zookeeper localhost:2181 --topic test
+
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092,localhost:9093,localhost:9094 --from-beginning --topic my-replicated-topic
+
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9094 --from-beginning --topic my-replicated-topic
+
+
+bin/kafka-console-producer.sh --broker-list localhost:9092 --topic my-replicated-topic
+
+
+# kill leader broker
+jps -mlvV |grep server-2.properties
+
+bin/kafka-topics.sh --describe --zookeeper localhost:2181 --topic my-replicated-topic
+
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --from-beginning --topic my-replicated-topic
+
+bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 3 --partitions 3 --topic my-replicated-topic2
+----

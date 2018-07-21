@@ -1,0 +1,13 @@
+== Kafka Performance
+
+* http://epicdevs.com/17
+
+== Kafka Producer Performance
+
+[incremental="true"]
+image::https://t1.daumcdn.net/cfile/tistory/23441B445509177A1F[title="Kafka Producer Performance"]
+
+== Kafka Consumer Performance
+
+[incremental="true"]
+image::https://t1.daumcdn.net/cfile/tistory/217D7945550917BD0B[title="Kafka Consumer Performance"]

@@ -1,0 +1,6 @@
+== References
+
+* http://kafka.apache.org/
+** http://kafka.apache.org/intro.html
+* https://github.com/apache/kafka
+* https://tedwon.atlassian.net/wiki/spaces/SE/pages/1213161/Apache+Kafka

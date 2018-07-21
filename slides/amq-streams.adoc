@@ -1,0 +1,21 @@
+== AMQ Streams
+* Red Hat 기술 지원 버전 Kafka
+* Running on OpenShift v3.9+
+** Provides Kafka and Zookeeper Docker images
+* Announced at Red Hat Summit 2018
+** https://developers.redhat.com/blog/2018/05/07/announcing-amq-streams-apache-kafka-on-openshift/
+
+== AMQ Streams Developer Preview
+* http://amq.io/amqstreams/
+
+== AMQ Streams is Kafka on OpenShift
+* Run by Strimzi community project
+
+== Strimzi project
+* http://strimzi.io/
+* Strimzi runs Kafka cluster on Kubernetes and OpenShift
+* Strimzi 발표자료 http://strimzi.io/presentations/
+** Introducing AMQ Streams (Red Hat Summit, May 2018)
+ https://www.slideshare.net/paolopat/introducing-amq-streams-data-streaming-with-apache-kafka
+** Apache Kafka: Turning your architecture inside out https://speakerdeck.com/tombentley/riviera-dev-2018-apache-kafka-turning-your-architecture-inside-out
+*** 순수 Kafka 소개만 하고 있음, Strimzi 내용 없음
