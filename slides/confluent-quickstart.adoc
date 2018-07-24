@@ -2,3 +2,167 @@
 
 * Confluent 실습
 * https://docs.confluent.io/current/quickstart/cos-quickstart.html
+* This hands-on is based on Confluent Open Source 4.1.1
+
+=== Prerequisites
+
+* JDK 8
+
+== Download Confluent
+
+* Confluent를 다운로드하고 설치합니다.
+* https://www.confluent.io/download/
+
+[source,sh]
+----
+tar -xzf confluent-oss-4.1.1-2.11.tar.gz
+cd confluent-4.1.1
+----
+
+== Start Confluent
+
+* Confluent 설정 업데이트 후 실행합니다.
+** etc/kafka/server.properties 에 hostname을 명시해줍니다.
+
+[source,sh]
+----
+cd confluent-4.1.1
+
+vim etc/kafka/server.properties
+listeners=PLAINTEXT://127.0.0.1:9092
+
+bin/confluent start
+----
+
+== Create Kafka Topics
+
+* Create topics using the Kafka CLI
+
+[source,sh]
+----
+bin/kafka-topics --create --zookeeper localhost:2181 \
+  --replication-factor 1 --partitions 1 --topic users
+
+bin/kafka-topics --create --zookeeper localhost:2181   \
+  --replication-factor 1 --partitions 1 --topic pageviews
+----
+
+
+== Create Sample Data
+
+* By using the ksql-datagen
+* The datagen runs as a long-running process in your terminal. 
+* Run each datagen step in a separate terminal.
+
+[source,sh]
+----
+bin/ksql-datagen quickstart=pageviews format=delimited topic=pageviews maxInterval=100
+
+bin/ksql-datagen quickstart=users format=json topic=users maxInterval=1000
+----
+
+== Create and Write to a Stream and Table using KSQL
+
+* KSQL queries
+* KSQL CLI
+* KSQL web interface (Confluent Platform Enterprise)
+
+== Create Streams and Tables
+
+[source,sh]
+----
+bin/ksql
+----
+
+== Create a stream (pageviews) from the Kafka topic pageviews
+
+* KSQL attempts to store its logs in a directory called logs
+
+[source,sh]
+----
+ksql> CREATE STREAM pageviews (viewtime BIGINT, userid VARCHAR, pageid VARCHAR) \
+WITH (KAFKA_TOPIC='pageviews', VALUE_FORMAT='DELIMITED');
+
+SHOW STREAMS;
+----
+
+
+== Create a table (users) with several columns from the Kafka topic users
+
+* With the value_format of JSON
+
+[source,sh]
+----
+ksql> CREATE TABLE users (registertime BIGINT, gender VARCHAR, regionid VARCHAR, \
+userid VARCHAR, \interests array<VARCHAR>, contact_info map<VARCHAR, VARCHAR>) \
+WITH (KAFKA_TOPIC='users', VALUE_FORMAT='JSON', KEY = 'userid');
+
+SHOW STREAMS;
+----
+
+== Write Queries
+
+* These examples write queries using KSQL.
+
+== Add the custom query property earliest for the auto.offset.reset parameter.
+
+[source,sh]
+----
+ksql> SET 'auto.offset.reset'='earliest';
+
+ksql> SELECT pageid FROM pageviews LIMIT 3;
+----
+
+== Create a persistent query that filters for female users.
+
+* The results from this query are written to the Kafka PAGEVIEWS_FEMALE topic.
+* This query enriches the pageviews STREAM by doing a LEFT JOIN with the users TABLE on the user ID, where a condition (gender = 'FEMALE') is met.
+
+[source,sh]
+----
+ksql> CREATE STREAM pageviews_female AS SELECT users.userid AS userid, pageid, \
+regionid, gender FROM pageviews LEFT JOIN users ON pageviews.userid = users.userid \
+WHERE gender = 'FEMALE';
+----
+
+== Create a persistent query where a condition (regionid) is met
+
+* , using LIKE. Results from this query are written to a Kafka topic named pageviews_enriched_r8_r9.
+
+[source,sh]
+----
+ksql> CREATE STREAM pageviews_female_like_89 WITH (kafka_topic='pageviews_enriched_r8_r9', \
+value_format='DELIMITED') AS SELECT * FROM pageviews_female WHERE regionid LIKE '%_8' OR regionid LIKE '%_9';
+----
+
+== Create a persistent query that counts the pageviews for each region and gender
+
+* combination in a tumbling window of 30 seconds when the count is greater than 1. 
+* The result is now a `table`, rather than a stream. 
+* Results from this query are written to a Kafka topic called PAGEVIEWS_REGIONS.
+
+[source,sh]
+----
+ksql> CREATE TABLE pageviews_regions AS SELECT gender, regionid , \
+COUNT(*) AS numusers FROM pageviews_female WINDOW TUMBLING (size 30 second) \
+GROUP BY gender, regionid HAVING COUNT(*) > 1;
+----
+
+== Monitor Streaming Data
+
+* stream or table with the DESCRIBE EXTENDED command
+
+[source,sh]
+----
+DESCRIBE EXTENDED pageviews_female_like_89;
+----
+
+* Discover the query execution plan with the EXPLAIN command. For example, run this command to view the query execution plan for CTAS_PAGEVIEWS_REGIONS:
+
+[source,sh]
+----
+EXPLAIN CTAS_PAGEVIEWS_REGIONS;
+----
+
+* KSQL Syntax Reference https://docs.confluent.io/current/ksql/docs/syntax-reference.html#ksql-syntax-reference
+
