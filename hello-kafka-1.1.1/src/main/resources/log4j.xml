@@ -11,8 +11,8 @@
         </layout>
     </appender>
 
-    <logger name="org.jboss">
-        <level value="DEBUG"/>
+    <logger name="org.apache.kafka">
+        <level value="INFO"/>
     </logger>
 
     <root>
