@@ -1,0 +1,5 @@
+== Producer Send Source Code
+
+* https://github.com/apache/kafka/blob/0.8/core/src/main/scala/kafka/producer/SyncProducer.scala#L62-L86
+* https://github.com/apache/kafka/blob/trunk/clients/src/main/java/org/apache/kafka/common/record/MemoryRecords.java#L70-L83
+* https://github.com/apache/kafka/blob/trunk/clients/src/main/java/org/apache/kafka/common/network/ByteBufferSend.java#L58-L66

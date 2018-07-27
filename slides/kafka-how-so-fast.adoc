@@ -1,0 +1,4 @@
+== How Kafka is so fast
+
+* Why Kafka is so fast https://www.slideshare.net/baniuyao/kafka-24299168
+* Don't fear the filesystem! https://kafka.apache.org/documentation/#design_filesystem

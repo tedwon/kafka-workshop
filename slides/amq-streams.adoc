@@ -5,6 +5,9 @@
 * Announced at Red Hat Summit 2018
 ** https://developers.redhat.com/blog/2018/05/07/announcing-amq-streams-apache-kafka-on-openshift/
 
+* Red Hat JBoss AMQ and Apache Kafka : which to use ?
+** https://www.slideshare.net/paolopat/red-hat-jboss-amq-and-apache-kafka-which-to-use
+
 == AMQ Streams Developer Preview
 * http://amq.io/amqstreams/
 

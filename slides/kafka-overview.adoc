@@ -1,6 +1,8 @@
 == Kafka is
 
 [incremental="true"]
+* Messaging System
+* Distributed Messaging System
 * Distributed Publish-Subscribe Messaging System
 * Distributed Streaming Platform
 * Data Hub
@@ -13,10 +15,10 @@ image::images/kafka_00.png[title="Kafka"]
 == After Kafka
 
 [incremental="true"]
-image::images/kafka_01.png[title="Kafka"]
+* Data Hub
 
 [incremental="true"]
-* Data Hub
+image::images/kafka_01.png[title="Kafka"]
 
 == Kafka High-level View
 
@@ -26,13 +28,14 @@ image::images/kafka_02.png[title="Kafka"]
 == Kafka is
 
 [incremental="true"]
-* Pub-sub 방식의 고성능 분산 메시징 시스템
+* Pub-sub 방식의 고성능 Distributed Messaging System
 * LinkedIn SNA팀에서 개발하고 서비스에 사용 중
-** 2011년 시작
-** Scala, Java 구현
-* LinkedIn에서 2014년 기준 300개가 넘는 브로커 운영
-** 18,000개의 토픽
-** 하루에 2,200억 메세지 처리 
+** Since 2011
+** Jay Kreps
+** Scala, Java
+* LinkedIn에서 2014년 기준 300개가 넘는 broker 운영
+** 18,000개의 topic
+** daily 2,200억 message 처리 
 
 == Kafka Three Design Principles
 
@@ -46,17 +49,29 @@ image::images/kafka_02.png[title="Kafka"]
 [incremental="true"]
 image::images/kafka_03.png[title="Kafka"]
 
+== Kafka Producer Performance
+
+[incremental="true"]
+image::https://t1.daumcdn.net/cfile/tistory/23441B445509177A1F[title="Kafka Producer Performance"]
+
+== Kafka Consumer Performance
+
+[incremental="true"]
+image::https://t1.daumcdn.net/cfile/tistory/217D7945550917BD0B[title="Kafka Consumer Performance"]
+
 == Kafka Overview
 
 [incremental="true"]
 * 사용하기 쉬운 API, 설정 옵션 제공
 * Zero-copy 방식으로 고성능 읽기 기능 제공
+** https://docs.oracle.com/javase/8/docs/api/java/nio/channels/FileChannel.html#transferTo-long-long-java.nio.channels.WritableByteChannel-[java.nio.channels
+Class FileChannel.transferTo()]
 * Scale-out 하기 좋은 시스템
-* 배치 단위 전송, 압축 기능 제공
-* Producer측에서 파티셔너를 구현해 분산 저장 조절 가능
+* Batch 단위 전송, Compression 기능 제공
+* Producer측에서 partitioner를 구현해 분산 저장 조절 가능
 * Kafka + Processing 구조로 활용
 ** Storm, Spark Streaming
-* 스트림 처리 KSQL 제공
+* Streaming 처리 KSQL 제공
 
 == High-level Architecture
 
@@ -68,7 +83,6 @@ image::images/kafka_04.png[title="Kafka"]
 [incremental="true"]
 image::images/kafka_06.png[title="Kafka"]
 
-[incremental="true"]
 * 네모 박스 하나가 하나의 process
 
 == Producing & Consuming
@@ -76,13 +90,28 @@ image::images/kafka_06.png[title="Kafka"]
 [incremental="true"]
 image::images/kafka_05.png[title="Kafka"]
 
-[incremental="true"]
 * 화살표선 하나가 하나의 thread
 
 == Kafka Log
 
 [incremental="true"]
 image::http://kafka.apache.org/11/images/kafka_log.png[title="Kafka Overview"]
+
+== How Kafka stores data on disk
+
+* How Kafka’s Storage Internals Work
+** https://thehoard.blog/how-kafkas-storage-internals-work-3a29b02e026
+
+* kafka.tools.DumpLogSegments since 1.1.0
+
+[source,sh]
+----
+$ bin/kafka-run-class.sh kafka.tools.DumpLogSegments --deep-iteration --print-data-log --files /data/kafka/events-1/00000000003065011416.log | head -n 4
+Dumping /data/kafka/appusers-1/00000000003065011416.log
+Starting offset: 3065011416
+offset: 3065011416 position: 0 isvalid: true payloadsize: 2820 magic: 1 compresscodec: NoCompressionCodec crc: 811055132 payload: {"name": "Travis", msg: "Hey, what's up?"}
+offset: 3065011417 position: 1779 isvalid: true payloadsize: 2244 magic: 1 compresscodec: NoCompressionCodec crc: 151590202 payload: {"name": "Wale", msg: "Starving."}
+----
 
 == Latest Kafka
 
@@ -95,15 +124,15 @@ image::http://kafka.apache.org/11/images/kafka-apis.png[title="Kafka Overview"]
 //image::http://kafka.apache.org/11/images/log_consumer.png[[alt=Flower,width=10%,height=10%]
 //image::http://kafka.apache.org/11/images/consumer-groups.png[title="Kafka Overview"]
 
-== Kafka Log
+//== Kafka Log
 
-[incremental="true"]
-image::http://kafka.apache.org/11/images/log_cleaner_anatomy.png[title="Kafka Overview"]
+//[incremental="true"]
+//image::http://kafka.apache.org/11/images/log_cleaner_anatomy.png[title="Kafka Overview"]
 
-== Kafka Log
+//== Kafka Log
 
-[incremental="true"]
-image::http://kafka.apache.org/11/images/log_compaction.png[title="Kafka Overview"]
+//[incremental="true"]
+//image::http://kafka.apache.org/11/images/log_compaction.png[title="Kafka Overview"]
 
 //image::http://kafka.apache.org/11/images/streams-concepts-topology.jpg[title="Kafka Overview"]
 
@@ -134,7 +163,21 @@ image::http://kafka.apache.org/11/images/streams-architecture-overview.jpg[title
 [incremental="true"]
 image::http://kafka.apache.org/11/images/streams-architecture-states.jpg[title="Kafka Overview"]
 
-== Keywords
+== Disk Design Consideration
 
-* leader and followers
-* message rewind/replay
+* http://kafka.apache.org/documentation/#diskandfs
+* Using multiple drives to get good throughput 
+* Not sharing drives for Kafka & app logs & OS
+* RAID into a single volume
+* Mount each drive as its own directory
+* Kafka has replication provided at the application level
+* choice has several tradeoffs.
+
+* http://kafka.apache.org/documentation/#brokerconfigs
+** log.dirs
+* https://community.hortonworks.com/articles/80813/kafka-best-practices-1.html
+
+//== Keywords
+
+//* leader and followers
+//* message rewind/replay

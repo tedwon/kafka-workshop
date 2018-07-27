@@ -2,30 +2,167 @@
 
 * Twitter 데이터 소스를 이용한 Kafka 활용 예제 실습
 * https://www.confluent.io/blog/using-ksql-to-analyse-query-and-transform-data-in-kafka
+* This hands-on is based on Confluent Open Source 4.1.1
+* Kafka version : 1.1.1-cp1 (org.apache.kafka.common.utils.AppInfoParser)
+
+=== Prerequisites
+
+* JDK 8
+
+== Download Confluent
+
+* Confluent를 다운로드하고 설치합니다.
+* https://www.confluent.io/download/
+* https://docs.confluent.io/current/installation/installing_cp/index.html
 
 [source,sh]
 ----
-cd /Users/tedwon/rh/runtime/kafka/confluent/confluent-4.1.1
+tar -xzf confluent-oss-4.1.1-2.11.tar.gz
+cd confluent-4.1.1
+----
+
+== Start Confluent
+
+* Confluent 설정 업데이트 후 실행합니다.
+** etc/kafka/server.properties 에 hostname을 명시해줍니다.
+* Introducing the Confluent CLI | Screencast https://www.youtube.com/watch?v=ZKqBptBHZTg
+
+[source,sh]
+----
+cd confluent-4.1.1
+
+vim etc/kafka/server.properties
+listeners=PLAINTEXT://127.0.0.1:9092
+
+bin/confluent start
+----
+
+== Checkout kafka-connect-twitter
+
+* https://github.com/jcustenborder/kafka-connect-twitter
+
+[source,sh]
+----
+git clone git@github.com:jcustenborder/kafka-connect-twitter.git
+cd kafka-connect-twitter
+----
+
+== Build kafka-connect-twitter
+
+[source,sh]
+----
+cd kafka-connect-twitter
+mvn clean package
+----
+
+== Installing Plugins
+
+* https://docs.confluent.io/current/connect/userguide.html?_ga=2.69756304.1685205078.1532562624-119390027.1521734425#connect-installing-plugins
+
+[source,sh]
+----
+cd confluent-4.1.1
 code etc/schema-registry/connect-avro-distributed.properties
+plugin.path=share/java,/Users/tedwon/kafka-connect-twitter/target/plugins/packages/jcustenborder-kafka-connect-twitter-0.2-SNAPSHOT-plugin/jcustenborder-kafka-connect-twitter-0.2-SNAPSHOT
+----
 
-plugin.path=share/java,/Users/tedwon/rh/build/upstream/kafka/jcustenborder/kafka-connect-twitter/target/kafka-connect-twitter-0.2-SNAPSHOT
+== Restart Kafka Connect
 
+* https://apps.twitter.com/
+
+[source,sh]
+----
 bin/confluent stop connect
 bin/confluent start connect
+----
 
-bin/confluent load twitter_source -d /Users/tedwon/rh/build/upstream/kafka/jcustenborder/kafka-connect-twitter/twitter-source.json
+== Load Kafka Connect Twitter
 
-bin/confluent load twitter_source -d /root/runtime/kafka/twitter-source.json
+[source,sh]
+----
+bin/confluent load twitter_source -d /Users/tedwon/kafka-connect-twitter/twitter-source.json
 
+bin/kafka-topics --zookeeper localhost:2181 --list
+twitter_json_01
+----
 
-bin/kafka-topics --zookeeper localhost:2181 --list 
+== Consuming Your Tweet
 
-
+[source,sh]
+----
 bin/kafka-console-consumer --bootstrap-server localhost:9092 --from-beginning --topic twitter_json_01
+----
 
-kafka test 입니다.
-https://www.confluent.io/blog/using-ksql-to-analyse-query-and-transform-data-in-kafka
-#tedwon #kafka
+== KSQL
+
+[source,sh]
+----
+bin/ksql
+
+ksql> CREATE STREAM twitter_raw (CreatedAt BIGINT, Id BIGINT, Text VARCHAR) WITH (KAFKA_TOPIC='twitter_json_01', VALUE_FORMAT='JSON');
+
+ksql> SET 'auto.offset.reset' = 'earliest';
+
+ksql> SELECT text FROM twitter_raw LIMIT 1;
+
+ksql> DROP stream twitter_raw;
+
+ksql> CREATE STREAM twitter_raw (CreatedAt bigint,Id bigint, Text VARCHAR, SOURCE VARCHAR, Truncated VARCHAR, InReplyToStatusId VARCHAR, InReplyToUserId VARCHAR, InReplyToScreenName VARCHAR, GeoLocation VARCHAR, Place VARCHAR, Favorited VARCHAR, Retweeted VARCHAR, FavoriteCount VARCHAR, User VARCHAR, Retweet VARCHAR, Contributors VARCHAR, RetweetCount VARCHAR, RetweetedByMe VARCHAR, CurrentUserRetweetId VARCHAR, PossiblySensitive VARCHAR, Lang VARCHAR, WithheldInCountries VARCHAR, HashtagEntities VARCHAR, UserMentionEntities VARCHAR, MediaEntities VARCHAR, SymbolEntities VARCHAR, URLEntities VARCHAR) WITH (KAFKA_TOPIC='twitter_json_01',VALUE_FORMAT='JSON');
+
+ksql> SELECT TIMESTAMPTOSTRING(CreatedAt, 'yyyy-MM-dd HH:mm:ss.SSS') AS CreatedAt,\
+EXTRACTJSONFIELD(user,'$.ScreenName') as ScreenName,Text \
+FROM twitter_raw;
+
+ksql> SELECT TIMESTAMPTOSTRING(CreatedAt, 'yyyy-MM-dd HH:mm:ss.SSS') AS CreatedAt,\
+EXTRACTJSONFIELD(user,'$.ScreenName') as ScreenName,Text \
+FROM twitter_raw \
+WHERE LCASE(hashtagentities) LIKE '%a%' OR \
+LCASE(hashtagentities) LIKE '%kafka%';
+
+
+
+ksql> CREATE STREAM twitter AS \
+SELECT TIMESTAMPTOSTRING(CreatedAt, 'yyyy-MM-dd HH:mm:ss.SSS') AS CreatedAt,\
+EXTRACTJSONFIELD(user,'$.Name') AS user_Name,\
+EXTRACTJSONFIELD(user,'$.ScreenName') AS user_ScreenName,\
+EXTRACTJSONFIELD(user,'$.Location') AS user_Location,\
+EXTRACTJSONFIELD(user,'$.Description') AS  user_Description,\
+Text,hashtagentities,lang \
+FROM twitter_raw ;
+
+ksql> DESCRIBE twitter;
+
+ksql> SELECT CREATEDAT, USER_NAME, TEXT \
+FROM TWITTER \
+WHERE TEXT LIKE '%kafka%';
+
+ksql> SELECT CREATEDAT, USER_NAME, TEXT \
+FROM TWITTER \
+WHERE TEXT LIKE '%KSQL%';
+
+ksql> SELECT user_screenname, COUNT(*) \
+FROM twitter WINDOW TUMBLING (SIZE 1 HOUR) \
+GROUP BY user_screenname HAVING COUNT(*) > 1;
+
+ksql> CREATE TABLE user_tweet_count AS \
+SELECT user_screenname, count(*) AS  tweet_count \
+FROM twitter WINDOW TUMBLING (SIZE 1 HOUR) \
+GROUP BY user_screenname ;
+
+ksql> DESCRIBE user_tweet_count;
+
+ksql> SELECT TIMESTAMPTOSTRING(ROWTIME, 'yyyy-MM-dd HH:mm:ss.SSS') , \
+ROWKEY, USER_SCREENNAME, TWEET_COUNT \
+FROM user_tweet_count \
+WHERE USER_SCREENNAME= 'tedwon';
+
+ksql> CREATE TABLE USER_TWEET_COUNT_DISPLAY AS \
+SELECT TIMESTAMPTOSTRING(ROWTIME, 'yyyy-MM-dd HH:mm:ss.SSS') AS WINDOW_START ,\
+USER_SCREENNAME, TWEET_COUNT \
+FROM user_tweet_count;
+
+ksql> SELECT WINDOW_START ,  USER_SCREENNAME, TWEET_COUNT \
+FROM USER_TWEET_COUNT_DISPLAY WHERE TWEET_COUNT> 20;
 ----
 
 == Tumbling Time Windows

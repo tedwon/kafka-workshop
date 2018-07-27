@@ -51,6 +51,7 @@ bin/kafka-server-start.sh config/server.properties
 == Create a topic
 
 * test topic을 생성합니다.
+* Note: parition 1 이라면 메세지 순서가 보장된다. (당연한 소리)
 
 [source,sh]
 ----
@@ -70,6 +71,7 @@ bin/kafka-topics.sh --list --zookeeper localhost:2181
 
 [source,sh]
 ----
+cd zookeeper-3.4.12
 bin/zkCli.sh -server 127.0.0.1:2181
 
 ls /
@@ -87,6 +89,14 @@ ls /brokers/topics/test/partitions/0/state
 get /brokers/topics/test/partitions/0/state
 ----
 
+== Why Zookeeper
+
+* Zookeeper 가 필요한 이유
+* Distributed Consensus Algorithm 구현 필요
+* 시스템 간의 락, 설정 공유, 리더 선출, atomic 한 연산등 구현이 필요
+** https://www.confluent.io/blog/distributed-consensus-reloaded-apache-zookeeper-and-replication-in-kafka/
+** https://blog.seulgi.kim/2014/05/zookeeper-1-znode-zookeeper-data.html
+** https://blog.seulgi.kim/2014/05/zookeeper-0-zookeepr.html
 
 == Producing some messages
 
@@ -110,7 +120,7 @@ bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test --f
 
 == Setting up a multi-broker cluster
 
-* kafka broker를 2개 더 추가합니다. 총 3개.
+* kafka broker 2개 더 추가합니다. 총 3개
 * kafka broker id: 0, 1, 2
 * config/server.properties 파일을 복사하여 추가 생성합니다.
 ** broker.id
@@ -161,12 +171,18 @@ bin/kafka-console-producer.sh --broker-list localhost:9092,localhost:9093,localh
 
 # kill leader broker
 jps -mlvV |grep server.properties
+jps | grep server.properties | awk '{print $1}' | xargs kill -15
 ----
 
+== Use Kafka Streams to process data
 
-== Use Kafka Connect to import/export data
+* http://kafka.apache.org/11/documentation/streams/quickstart
+* 링크로 이동해서 Kafka Stream 기능을 실습해보세요.
 
-* 
+
+== Kafka Connect
+
+* How to import/export data using Kafka Connect
 
 [source,sh]
 ----
@@ -185,7 +201,3 @@ bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic connect-
 bin/kafka-console-producer.sh --broker-list localhost:9092 --topic connect-test
 ----
 
-
-== Use Kafka Streams to process data
-
-* http://kafka.apache.org/11/documentation/streams/quickstart

@@ -1,9 +1,9 @@
-= Apache Kafka (WIP)
+= Apache Kafka
 :author: Jong Seok Won
 :email: <iamtedwon@gmail.com>
 :description: All about Apache Kafka.
-:revdate: 2018-07-21
-:revnumber: 0.2
+:revdate: 2018-07-27
+:revnumber: 0.8
 ///////////////////////
 	Themes that you can choose includes:
 	web-2.0, swiss, neon beamer
@@ -44,23 +44,23 @@
 
 include::kafka-overview.adoc[tags=main]
 
-//include::kafka-producer.adoc[tags=main]
+//include::kafka-performance.adoc[tags=main]
 
-//include::kafka-deep-inside.adoc[tags=main]
+//include::kafka-producer.adoc[tags=main]
 
 //include::kafka-how-so-fast.adoc[tags=main]
 
 include::kafka-quickstart.adoc[tags=main]
 
-include::confluent-quickstart.adoc[tags=main]
-
-include::kafka-performance.adoc[tags=main]
-
 include::kafka-connect.adoc[tags=main]
+
+include::confluent-quickstart.adoc[tags=main]
 
 include::kafka-connect-twitter.adoc[tags=main]
 
 //include::kafka-streams.adoc[tags=main]
+
+//include::kafka-deep-inside.adoc[tags=main]
 
 include::amq-streams.adoc[tags=main]
 

@@ -5,3 +5,5 @@
 * https://github.com/apache/kafka
 * https://tedwon.atlassian.net/wiki/spaces/SE/pages/1213161/Apache+Kafka
 * https://www.confluent.io/
+* Hands-free Kafka Replication: A lesson in operational simplicity
+** https://www.confluent.io/blog/hands-free-kafka-replication-a-lesson-in-operational-simplicity/

@@ -3,12 +3,12 @@
 <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Apache Kafka (WIP)</title>
+        <title>Apache Kafka</title>
         <meta name="description" content="All about Apache Kafka." />
         <meta name="viewport" content="width=1024, user-scalable=no">
         <meta name="author" content="Jong Seok Won" />
         <meta name="generator" content="AsciiDoc 8.6.10" />
-        <meta name="presdate" content="2018-07-21" />
+        <meta name="presdate" content="2018-07-27" />
         
         <!-- Core and extension CSS files -->
 <style type="text/css">
@@ -2533,13 +2533,19 @@ This module splits a long slide into multiple slides.
 </head>
 <body class="deck-container">
 <section class="slide" id="title-slide">
-        <h1>Apache Kafka (WIP)</h1>
+        <h1>Apache Kafka</h1>
         <h3>Jong Seok Won</h3>
-        <h4>2018-07-21</h4>
+        <h4>2018-07-27</h4>
 </section>
 <section class="slide">
 <h2>Kafka is</h2>
 <ul>
+<li class=" slide">
+Messaging System
+</li>
+<li class=" slide">
+Distributed Messaging System
+</li>
 <li class=" slide">
 Distributed Publish-Subscribe Messaging System
 </li>
@@ -2557,12 +2563,12 @@ Data Hub
 </section>
 <section class="slide">
 <h2>After Kafka</h2>
-<img src="images/kafka_01.png" alt="images/kafka_01.png" class="slide"/>
 <ul>
 <li class=" slide">
 Data Hub
 </li>
 </ul>
+<img src="images/kafka_01.png" alt="images/kafka_01.png" class="slide"/>
 </section>
 <section class="slide">
 <h2>Kafka High-level View</h2>
@@ -2572,27 +2578,30 @@ Data Hub
 <h2>Kafka is</h2>
 <ul>
 <li class=" slide">
-Pub-sub 방식의 고성능 분산 메시징 시스템
+Pub-sub 방식의 고성능 Distributed Messaging System
 </li>
 <li class=" slide">
 LinkedIn SNA팀에서 개발하고 서비스에 사용 중
 <ul>
 <li class="">
-2011년 시작
+Since 2011
 </li>
 <li class="">
-Scala, Java 구현
+Jay Kreps
+</li>
+<li class="">
+Scala, Java
 </li>
 </ul>
 </li>
 <li class=" slide">
-LinkedIn에서 2014년 기준 300개가 넘는 브로커 운영
+LinkedIn에서 2014년 기준 300개가 넘는 broker 운영
 <ul>
 <li class="">
-18,000개의 토픽
+18,000개의 topic
 </li>
 <li class="">
-하루에 2,200억 메세지 처리
+daily 2,200억 message 처리
 </li>
 </ul>
 </li>
@@ -2617,6 +2626,14 @@ Scaled out architecture from the beginning
 <img src="images/kafka_03.png" alt="images/kafka_03.png" class="slide"/>
 </section>
 <section class="slide">
+<h2>Kafka Producer Performance</h2>
+<img src="https://t1.daumcdn.net/cfile/tistory/23441B445509177A1F" alt="https://t1.daumcdn.net/cfile/tistory/23441B445509177A1F" class="slide"/>
+</section>
+<section class="slide">
+<h2>Kafka Consumer Performance</h2>
+<img src="https://t1.daumcdn.net/cfile/tistory/217D7945550917BD0B" alt="https://t1.daumcdn.net/cfile/tistory/217D7945550917BD0B" class="slide"/>
+</section>
+<section class="slide">
 <h2>Kafka Overview</h2>
 <ul>
 <li class=" slide">
@@ -2624,15 +2641,21 @@ Scaled out architecture from the beginning
 </li>
 <li class=" slide">
 Zero-copy 방식으로 고성능 읽기 기능 제공
+<ul>
+<li class="">
+<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/channels/FileChannel.html#transferTo-long-long-java.nio.channels.WritableByteChannel-">java.nio.channels
+Class FileChannel.transferTo()</a>
+</li>
+</ul>
 </li>
 <li class=" slide">
 Scale-out 하기 좋은 시스템
 </li>
 <li class=" slide">
-배치 단위 전송, 압축 기능 제공
+Batch 단위 전송, Compression 기능 제공
 </li>
 <li class=" slide">
-Producer측에서 파티셔너를 구현해 분산 저장 조절 가능
+Producer측에서 partitioner를 구현해 분산 저장 조절 가능
 </li>
 <li class=" slide">
 Kafka + Processing 구조로 활용
@@ -2643,7 +2666,7 @@ Storm, Spark Streaming
 </ul>
 </li>
 <li class=" slide">
-스트림 처리 KSQL 제공
+Streaming 처리 KSQL 제공
 </li>
 </ul>
 </section>
@@ -2655,7 +2678,7 @@ Storm, Spark Streaming
 <h2>Producing &amp; Consuming</h2>
 <img src="images/kafka_06.png" alt="images/kafka_06.png" class="slide"/>
 <ul>
-<li class=" slide">
+<li class="">
 네모 박스 하나가 하나의 process
 </li>
 </ul>
@@ -2664,7 +2687,7 @@ Storm, Spark Streaming
 <h2>Producing &amp; Consuming</h2>
 <img src="images/kafka_05.png" alt="images/kafka_05.png" class="slide"/>
 <ul>
-<li class=" slide">
+<li class="">
 화살표선 하나가 하나의 thread
 </li>
 </ul>
@@ -2674,16 +2697,34 @@ Storm, Spark Streaming
 <img src="http://kafka.apache.org/11/images/kafka_log.png" alt="http://kafka.apache.org/11/images/kafka_log.png" class="slide"/>
 </section>
 <section class="slide">
+<h2>How Kafka stores data on disk</h2>
+<ul>
+<li class="">
+How Kafka’s Storage Internals Work
+<ul>
+<li class="">
+<a href="https://thehoard.blog/how-kafkas-storage-internals-work-3a29b02e026">https://thehoard.blog/how-kafkas-storage-internals-work-3a29b02e026</a>
+</li>
+</ul>
+</li>
+<li class="">
+kafka.tools.DumpLogSegments since 1.1.0
+</li>
+</ul>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>$ bin/kafka-run-class<span style="color: #990000">.</span>sh kafka<span style="color: #990000">.</span>tools<span style="color: #990000">.</span>DumpLogSegments --deep-iteration --print-data-log --files /data/kafka/events-<span style="color: #993399">1</span><span style="color: #990000">/</span><span style="color: #993399">00000000003065011416</span><span style="color: #990000">.</span>log <span style="color: #990000">|</span> head -n <span style="color: #993399">4</span>
+Dumping /data/kafka/appusers-<span style="color: #993399">1</span><span style="color: #990000">/</span><span style="color: #993399">00000000003065011416</span><span style="color: #990000">.</span>log
+Starting offset<span style="color: #990000">:</span> <span style="color: #993399">3065011416</span>
+offset<span style="color: #990000">:</span> <span style="color: #993399">3065011416</span> position<span style="color: #990000">:</span> <span style="color: #993399">0</span> isvalid<span style="color: #990000">:</span> <span style="font-weight: bold"><span style="color: #0000FF">true</span></span> payloadsize<span style="color: #990000">:</span> <span style="color: #993399">2820</span> magic<span style="color: #990000">:</span> <span style="color: #993399">1</span> compresscodec<span style="color: #990000">:</span> NoCompressionCodec crc<span style="color: #990000">:</span> <span style="color: #993399">811055132</span> payload<span style="color: #990000">:</span> {<span style="color: #FF0000">"name"</span><span style="color: #990000">:</span> <span style="color: #FF0000">"Travis"</span><span style="color: #990000">,</span> msg<span style="color: #990000">:</span> <span style="color: #FF0000">"Hey, what's up?"</span>}
+offset<span style="color: #990000">:</span> <span style="color: #993399">3065011417</span> position<span style="color: #990000">:</span> <span style="color: #993399">1779</span> isvalid<span style="color: #990000">:</span> <span style="font-weight: bold"><span style="color: #0000FF">true</span></span> payloadsize<span style="color: #990000">:</span> <span style="color: #993399">2244</span> magic<span style="color: #990000">:</span> <span style="color: #993399">1</span> compresscodec<span style="color: #990000">:</span> NoCompressionCodec crc<span style="color: #990000">:</span> <span style="color: #993399">151590202</span> payload<span style="color: #990000">:</span> {<span style="color: #FF0000">"name"</span><span style="color: #990000">:</span> <span style="color: #FF0000">"Wale"</span><span style="color: #990000">,</span> msg<span style="color: #990000">:</span> <span style="color: #FF0000">"Starving."</span>}</tt></pre></div></div>
+</section>
+<section class="slide">
 <h2>Latest Kafka</h2>
 <img src="http://kafka.apache.org/11/images/kafka-apis.png" alt="http://kafka.apache.org/11/images/kafka-apis.png" class="slide"/>
-</section>
-<section class="slide">
-<h2>Kafka Log</h2>
-<img src="http://kafka.apache.org/11/images/log_cleaner_anatomy.png" alt="http://kafka.apache.org/11/images/log_cleaner_anatomy.png" class="slide"/>
-</section>
-<section class="slide">
-<h2>Kafka Log</h2>
-<img src="http://kafka.apache.org/11/images/log_compaction.png" alt="http://kafka.apache.org/11/images/log_compaction.png" class="slide"/>
 </section>
 <section class="slide">
 <h2>Kafka Mirroring</h2>
@@ -2706,13 +2747,39 @@ Storm, Spark Streaming
 <img src="http://kafka.apache.org/11/images/streams-architecture-states.jpg" alt="http://kafka.apache.org/11/images/streams-architecture-states.jpg" class="slide"/>
 </section>
 <section class="slide">
-<h2>Keywords</h2>
+<h2>Disk Design Consideration</h2>
 <ul>
 <li class="">
-leader and followers
+<a href="http://kafka.apache.org/documentation/#diskandfs">http://kafka.apache.org/documentation/#diskandfs</a>
 </li>
 <li class="">
-message rewind/replay
+Using multiple drives to get good throughput
+</li>
+<li class="">
+Not sharing drives for Kafka &amp; app logs &amp; OS
+</li>
+<li class="">
+RAID into a single volume
+</li>
+<li class="">
+Mount each drive as its own directory
+</li>
+<li class="">
+Kafka has replication provided at the application level
+</li>
+<li class="">
+choice has several tradeoffs.
+</li>
+<li class="">
+<a href="http://kafka.apache.org/documentation/#brokerconfigs">http://kafka.apache.org/documentation/#brokerconfigs</a>
+<ul>
+<li class="">
+log.dirs
+</li>
+</ul>
+</li>
+<li class="">
+<a href="https://community.hortonworks.com/articles/80813/kafka-best-practices-1.html">https://community.hortonworks.com/articles/80813/kafka-best-practices-1.html</a>
 </li>
 </ul>
 </section>
@@ -2807,6 +2874,9 @@ bin/kafka-server-start<span style="color: #990000">.</span>sh config/server<span
 <li class="">
 test topic을 생성합니다.
 </li>
+<li class="">
+Note: parition 1 이라면 메세지 순서가 보장된다. (당연한 소리)
+</li>
 </ul>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight
@@ -2844,7 +2914,8 @@ Downalod Zookeeper <a href="http://mirror.navercorp.com/apache/zookeeper/stable/
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
-<pre><tt>bin/zkCli<span style="color: #990000">.</span>sh -server <span style="color: #993399">127.0</span><span style="color: #990000">.</span><span style="color: #993399">0.1</span><span style="color: #990000">:</span><span style="color: #993399">2181</span>
+<pre><tt>cd zookeeper-<span style="color: #993399">3.4</span><span style="color: #990000">.</span><span style="color: #993399">12</span>
+bin/zkCli<span style="color: #990000">.</span>sh -server <span style="color: #993399">127.0</span><span style="color: #990000">.</span><span style="color: #993399">0.1</span><span style="color: #990000">:</span><span style="color: #993399">2181</span>
 
 ls <span style="color: #990000">/</span>
 ls /brokers
@@ -2859,6 +2930,31 @@ ls /brokers/topics/test/partitions
 ls /brokers/topics/test/partitions<span style="color: #990000">/</span><span style="color: #993399">0</span>
 ls /brokers/topics/test/partitions<span style="color: #990000">/</span><span style="color: #993399">0</span>/state
 get /brokers/topics/test/partitions<span style="color: #990000">/</span><span style="color: #993399">0</span>/state</tt></pre></div></div>
+</section>
+<section class="slide">
+<h2>Why Zookeeper</h2>
+<ul>
+<li class="">
+Zookeeper 가 필요한 이유
+</li>
+<li class="">
+Distributed Consensus Algorithm 구현 필요
+</li>
+<li class="">
+시스템 간의 락, 설정 공유, 리더 선출, atomic 한 연산등 구현이 필요
+<ul>
+<li class="">
+<a href="https://www.confluent.io/blog/distributed-consensus-reloaded-apache-zookeeper-and-replication-in-kafka/">https://www.confluent.io/blog/distributed-consensus-reloaded-apache-zookeeper-and-replication-in-kafka/</a>
+</li>
+<li class="">
+<a href="https://blog.seulgi.kim/2014/05/zookeeper-1-znode-zookeeper-data.html">https://blog.seulgi.kim/2014/05/zookeeper-1-znode-zookeeper-data.html</a>
+</li>
+<li class="">
+<a href="https://blog.seulgi.kim/2014/05/zookeeper-0-zookeepr.html">https://blog.seulgi.kim/2014/05/zookeeper-0-zookeepr.html</a>
+</li>
+</ul>
+</li>
+</ul>
 </section>
 <section class="slide">
 <h2>Producing some messages</h2>
@@ -2892,7 +2988,7 @@ http://www.gnu.org/software/src-highlite -->
 <h2>Setting up a multi-broker cluster</h2>
 <ul>
 <li class="">
-kafka broker를 2개 더 추가합니다. 총 3개.
+kafka broker 2개 더 추가합니다. 총 3개
 </li>
 <li class="">
 kafka broker id: 0, 1, 2
@@ -2965,11 +3061,27 @@ bin/kafka-console-producer<span style="color: #990000">.</span>sh --broker-list 
 
 
 <span style="font-style: italic"><span style="color: #9A1900"># kill leader broker</span></span>
-jps -mlvV <span style="color: #990000">|</span>grep server<span style="color: #990000">.</span>properties</tt></pre></div></div>
+jps -mlvV <span style="color: #990000">|</span>grep server<span style="color: #990000">.</span>properties
+jps <span style="color: #990000">|</span> grep server<span style="color: #990000">.</span>properties <span style="color: #990000">|</span> awk <span style="color: #FF0000">'{print $1}'</span> <span style="color: #990000">|</span> xargs kill -<span style="color: #993399">15</span></tt></pre></div></div>
 </section>
 <section class="slide">
-<h2>Use Kafka Connect to import/export data</h2>
-<p>*</p>
+<h2>Use Kafka Streams to process data</h2>
+<ul>
+<li class="">
+<a href="http://kafka.apache.org/11/documentation/streams/quickstart">http://kafka.apache.org/11/documentation/streams/quickstart</a>
+</li>
+<li class="">
+링크로 이동해서 Kafka Stream 기능을 실습해보세요.
+</li>
+</ul>
+</section>
+<section class="slide">
+<h2>Kafka Connect</h2>
+<ul>
+<li class="">
+How to import/export data using Kafka Connect
+</li>
+</ul>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
@@ -2990,12 +3102,35 @@ bin/kafka-console-consumer<span style="color: #990000">.</span>sh --bootstrap-se
 bin/kafka-console-producer<span style="color: #990000">.</span>sh --broker-list localhost<span style="color: #990000">:</span><span style="color: #993399">9092</span> --topic connect-test</tt></pre></div></div>
 </section>
 <section class="slide">
-<h2>Use Kafka Streams to process data</h2>
+<h2>Kafka Connect</h2>
 <ul>
 <li class="">
-<a href="http://kafka.apache.org/11/documentation/streams/quickstart">http://kafka.apache.org/11/documentation/streams/quickstart</a>
+<a href="http://kafka.apache.org/documentation.html#connect_overview">http://kafka.apache.org/documentation.html#connect_overview</a>
+</li>
+<li class="">
+<a href="http://kafka.apache.org/documentation.html#connectapi">http://kafka.apache.org/documentation.html#connectapi</a>
+</li>
+<li class="">
+<a href="https://www.confluent.io/product/connectors/">https://www.confluent.io/product/connectors/</a>
+</li>
+<li class="">
+<a href="https://docs.confluent.io/current/connect/quickstart.html">https://docs.confluent.io/current/connect/quickstart.html</a>
+</li>
+<li class="">
+<a href="https://docs.confluent.io/current/connect/userguide.html">https://docs.confluent.io/current/connect/userguide.html</a>
+</li>
+<li class="">
+<a href="https://docs.confluent.io/current/connect/devguide.html#connect-devguide">https://docs.confluent.io/current/connect/devguide.html#connect-devguide</a>
 </li>
 </ul>
+</section>
+<section class="slide">
+<h2>Kafka Connect</h2>
+<img src="https://cdn2.hubspot.net/hubfs/540072/blog-files/Kafka_and_the_age_of_streaming_data_integration/Kafka_and_the_age_of_streaming_data_integration_image_kafka_connect.png" alt="https://cdn2.hubspot.net/hubfs/540072/blog-files/Kafka_and_the_age_of_streaming_data_integration/Kafka_and_the_age_of_streaming_data_integration_image_kafka_connect.png" class="slide"/>
+</section>
+<section class="slide">
+<h2>Kafka Connect</h2>
+<img src="https://cdn2.hubspot.net/hubfs/540072/blog-files/Kafka_and_the_age_of_streaming_data_integration/Kafka_and_the_age_of_streaming_data_integration_image_sources_sinks.png" alt="https://cdn2.hubspot.net/hubfs/540072/blog-files/Kafka_and_the_age_of_streaming_data_integration/Kafka_and_the_age_of_streaming_data_integration_image_sources_sinks.png" class="slide"/>
 </section>
 <section class="slide">
 <h2>Confluent QuickStart</h2>
@@ -3008,6 +3143,9 @@ Confluent 실습
 </li>
 <li class="">
 This hands-on is based on Confluent Open Source 4.1.1
+</li>
+<li class="">
+Kafka version : 1.1.1-cp1 (org.apache.kafka.common.utils.AppInfoParser)
 </li>
 </ul>
 <div class="sect2">
@@ -3102,7 +3240,7 @@ http://www.gnu.org/software/src-highlite -->
 bin/ksql-datagen <span style="color: #009900">quickstart</span><span style="color: #990000">=</span>users <span style="color: #009900">format</span><span style="color: #990000">=</span>json <span style="color: #009900">topic</span><span style="color: #990000">=</span>users <span style="color: #009900">maxInterval</span><span style="color: #990000">=</span><span style="color: #993399">1000</span></tt></pre></div></div>
 </section>
 <section class="slide">
-<h2>Create and Write to a Stream and Table using KSQL</h2>
+<h2>Create Streams and Tables using KSQL</h2>
 <ul>
 <li class="">
 KSQL queries
@@ -3116,7 +3254,7 @@ KSQL web interface (Confluent Platform Enterprise)
 </ul>
 </section>
 <section class="slide">
-<h2>Create Streams and Tables</h2>
+<h2>Create Streams and Tables using KSQL</h2>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
@@ -3168,7 +3306,7 @@ These examples write queries using KSQL.
 </ul>
 </section>
 <section class="slide">
-<h2>Add the custom query property earliest for the auto.offset.reset parameter.</h2>
+<h2>Add the custom query property earliest</h2>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
@@ -3201,7 +3339,7 @@ WHERE gender <span style="color: #990000">=</span> <span style="color: #FF0000">
 <h2>Create a persistent query where a condition (regionid) is met</h2>
 <ul>
 <li class="">
-, using LIKE. Results from this query are written to a Kafka topic named pageviews_enriched_r8_r9.
+Results from this query are written to a Kafka topic named pageviews_enriched_r8_r9.
 </li>
 </ul>
 <div class="listingblock">
@@ -3216,7 +3354,7 @@ http://www.gnu.org/software/src-highlite -->
 <h2>Create a persistent query that counts the pageviews for each region and gender</h2>
 <ul>
 <li class="">
-combination in a tumbling window of 30 seconds when the count is greater than 1.
+Combination in a tumbling window of 30 seconds when the count is greater than 1.
 </li>
 <li class="">
 The result is now a <code>table</code>, rather than a stream.
@@ -3238,7 +3376,7 @@ GROUP BY gender<span style="color: #990000">,</span> regionid HAVING COUNT<span 
 <h2>Monitor Streaming Data</h2>
 <ul>
 <li class="">
-stream or table with the DESCRIBE EXTENDED command
+Stream or table with the DESCRIBE EXTENDED command
 </li>
 </ul>
 <div class="listingblock">
@@ -3265,53 +3403,6 @@ KSQL Syntax Reference <a href="https://docs.confluent.io/current/ksql/docs/synta
 </ul>
 </section>
 <section class="slide">
-<h2>Kafka Performance</h2>
-<ul>
-<li class="">
-<a href="http://epicdevs.com/17">http://epicdevs.com/17</a>
-</li>
-</ul>
-</section>
-<section class="slide">
-<h2>Kafka Producer Performance</h2>
-<img src="https://t1.daumcdn.net/cfile/tistory/23441B445509177A1F" alt="https://t1.daumcdn.net/cfile/tistory/23441B445509177A1F" class="slide"/>
-</section>
-<section class="slide">
-<h2>Kafka Consumer Performance</h2>
-<img src="https://t1.daumcdn.net/cfile/tistory/217D7945550917BD0B" alt="https://t1.daumcdn.net/cfile/tistory/217D7945550917BD0B" class="slide"/>
-</section>
-<section class="slide">
-<h2>Kafka Connect</h2>
-<ul>
-<li class="">
-<a href="http://kafka.apache.org/documentation.html#connect_overview">http://kafka.apache.org/documentation.html#connect_overview</a>
-</li>
-<li class="">
-<a href="http://kafka.apache.org/documentation.html#connectapi">http://kafka.apache.org/documentation.html#connectapi</a>
-</li>
-<li class="">
-<a href="https://www.confluent.io/product/connectors/">https://www.confluent.io/product/connectors/</a>
-</li>
-<li class="">
-<a href="https://docs.confluent.io/current/connect/quickstart.html">https://docs.confluent.io/current/connect/quickstart.html</a>
-</li>
-<li class="">
-<a href="https://docs.confluent.io/current/connect/userguide.html">https://docs.confluent.io/current/connect/userguide.html</a>
-</li>
-<li class="">
-<a href="https://docs.confluent.io/current/connect/devguide.html#connect-devguide">https://docs.confluent.io/current/connect/devguide.html#connect-devguide</a>
-</li>
-</ul>
-</section>
-<section class="slide">
-<h2>Kafka Connect</h2>
-<img src="https://cdn2.hubspot.net/hubfs/540072/blog-files/Kafka_and_the_age_of_streaming_data_integration/Kafka_and_the_age_of_streaming_data_integration_image_kafka_connect.png" alt="https://cdn2.hubspot.net/hubfs/540072/blog-files/Kafka_and_the_age_of_streaming_data_integration/Kafka_and_the_age_of_streaming_data_integration_image_kafka_connect.png" class="slide"/>
-</section>
-<section class="slide">
-<h2>Kafka Connect</h2>
-<img src="https://cdn2.hubspot.net/hubfs/540072/blog-files/Kafka_and_the_age_of_streaming_data_integration/Kafka_and_the_age_of_streaming_data_integration_image_sources_sinks.png" alt="https://cdn2.hubspot.net/hubfs/540072/blog-files/Kafka_and_the_age_of_streaming_data_integration/Kafka_and_the_age_of_streaming_data_integration_image_sources_sinks.png" class="slide"/>
-</section>
-<section class="slide">
 <h2>Twitter Data in Apache Kafka</h2>
 <ul>
 <li class="">
@@ -3320,33 +3411,220 @@ Twitter 데이터 소스를 이용한 Kafka 활용 예제 실습
 <li class="">
 <a href="https://www.confluent.io/blog/using-ksql-to-analyse-query-and-transform-data-in-kafka">https://www.confluent.io/blog/using-ksql-to-analyse-query-and-transform-data-in-kafka</a>
 </li>
+<li class="">
+This hands-on is based on Confluent Open Source 4.1.1
+</li>
+<li class="">
+Kafka version : 1.1.1-cp1 (org.apache.kafka.common.utils.AppInfoParser)
+</li>
+</ul>
+<div class="sect2">
+<h3 id="_prerequisites_3">Prerequisites</h3>
+<ul>
+<li class="">
+JDK 8
+</li>
+</ul>
+</div>
+</section>
+<section class="slide">
+<h2>Download Confluent</h2>
+<ul>
+<li class="">
+Confluent를 다운로드하고 설치합니다.
+</li>
+<li class="">
+<a href="https://www.confluent.io/download/">https://www.confluent.io/download/</a>
+</li>
+<li class="">
+<a href="https://docs.confluent.io/current/installation/installing_cp/index.html">https://docs.confluent.io/current/installation/installing_cp/index.html</a>
+</li>
 </ul>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
-<pre><tt>cd /Users/tedwon/rh/runtime/kafka/confluent/confluent-<span style="color: #993399">4.1</span><span style="color: #990000">.</span><span style="color: #993399">1</span>
+<pre><tt>tar -xzf confluent-oss-<span style="color: #993399">4.1</span><span style="color: #990000">.</span><span style="color: #993399">1</span>-<span style="color: #993399">2.11</span><span style="color: #990000">.</span>tar<span style="color: #990000">.</span>gz
+cd confluent-<span style="color: #993399">4.1</span><span style="color: #990000">.</span><span style="color: #993399">1</span></tt></pre></div></div>
+</section>
+<section class="slide">
+<h2>Start Confluent</h2>
+<ul>
+<li class="">
+Confluent 설정 업데이트 후 실행합니다.
+<ul>
+<li class="">
+etc/kafka/server.properties 에 hostname을 명시해줍니다.
+</li>
+</ul>
+</li>
+<li class="">
+Introducing the Confluent CLI | Screencast <a href="https://www.youtube.com/watch?v=ZKqBptBHZTg">https://www.youtube.com/watch?v=ZKqBptBHZTg</a>
+</li>
+</ul>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>cd confluent-<span style="color: #993399">4.1</span><span style="color: #990000">.</span><span style="color: #993399">1</span>
+
+vim etc/kafka/server<span style="color: #990000">.</span>properties
+<span style="color: #009900">listeners</span><span style="color: #990000">=</span>PLAINTEXT<span style="color: #990000">://</span><span style="color: #993399">127.0</span><span style="color: #990000">.</span><span style="color: #993399">0.1</span><span style="color: #990000">:</span><span style="color: #993399">9092</span>
+
+bin/confluent start</tt></pre></div></div>
+</section>
+<section class="slide">
+<h2>Checkout kafka-connect-twitter</h2>
+<ul>
+<li class="">
+<a href="https://github.com/jcustenborder/kafka-connect-twitter">https://github.com/jcustenborder/kafka-connect-twitter</a>
+</li>
+</ul>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>git clone git@github<span style="color: #990000">.</span>com<span style="color: #990000">:</span>jcustenborder/kafka-connect-twitter<span style="color: #990000">.</span>git
+cd kafka-connect-twitter</tt></pre></div></div>
+</section>
+<section class="slide">
+<h2>Build kafka-connect-twitter</h2>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>cd kafka-connect-twitter
+mvn clean package</tt></pre></div></div>
+</section>
+<section class="slide">
+<h2>Installing Plugins</h2>
+<ul>
+<li class="">
+<a href="https://docs.confluent.io/current/connect/userguide.html?_ga=2.69756304.1685205078.1532562624-119390027.1521734425#connect-installing-plugins">https://docs.confluent.io/current/connect/userguide.html?_ga=2.69756304.1685205078.1532562624-119390027.1521734425#connect-installing-plugins</a>
+</li>
+</ul>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>cd confluent-<span style="color: #993399">4.1</span><span style="color: #990000">.</span><span style="color: #993399">1</span>
 code etc/schema-registry/connect-avro-distributed<span style="color: #990000">.</span>properties
-
-plugin<span style="color: #990000">.</span><span style="color: #009900">path</span><span style="color: #990000">=</span>share/java<span style="color: #990000">,</span>/Users/tedwon/rh/build/upstream/kafka/jcustenborder/kafka-connect-twitter/target/kafka-connect-twitter-<span style="color: #993399">0.2</span>-SNAPSHOT
-
-bin/confluent stop connect
-bin/confluent start connect
-
-bin/confluent load twitter_source -d /Users/tedwon/rh/build/upstream/kafka/jcustenborder/kafka-connect-twitter/twitter-source<span style="color: #990000">.</span>json
-
-bin/confluent load twitter_source -d /root/runtime/kafka/twitter-source<span style="color: #990000">.</span>json
-
+plugin<span style="color: #990000">.</span><span style="color: #009900">path</span><span style="color: #990000">=</span>share/java<span style="color: #990000">,</span>/Users/tedwon/kafka-connect-twitter/target/plugins/packages/jcustenborder-kafka-connect-twitter-<span style="color: #993399">0.2</span>-SNAPSHOT-plugin/jcustenborder-kafka-connect-twitter-<span style="color: #993399">0.2</span>-SNAPSHOT</tt></pre></div></div>
+</section>
+<section class="slide">
+<h2>Restart Kafka Connect</h2>
+<ul>
+<li class="">
+<a href="https://apps.twitter.com/">https://apps.twitter.com/</a>
+</li>
+</ul>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>bin/confluent stop connect
+bin/confluent start connect</tt></pre></div></div>
+</section>
+<section class="slide">
+<h2>Load Kafka Connect Twitter</h2>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>bin/confluent load twitter_source -d /Users/tedwon/kafka-connect-twitter/twitter-source<span style="color: #990000">.</span>json
 
 bin/kafka-topics --zookeeper localhost<span style="color: #990000">:</span><span style="color: #993399">2181</span> --list
+twitter_json_01</tt></pre></div></div>
+</section>
+<section class="slide">
+<h2>Consuming Your Tweet</h2>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>bin/kafka-console-consumer --bootstrap-server localhost<span style="color: #990000">:</span><span style="color: #993399">9092</span> --from-beginning --topic twitter_json_01</tt></pre></div></div>
+</section>
+<section class="slide">
+<h2>KSQL</h2>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>bin/ksql
+
+ksql<span style="color: #990000">&gt;</span> CREATE STREAM twitter_raw <span style="color: #990000">(</span>CreatedAt BIGINT<span style="color: #990000">,</span> Id BIGINT<span style="color: #990000">,</span> Text VARCHAR<span style="color: #990000">)</span> WITH <span style="color: #990000">(</span><span style="color: #009900">KAFKA_TOPIC</span><span style="color: #990000">=</span><span style="color: #FF0000">'twitter_json_01'</span><span style="color: #990000">,</span> <span style="color: #009900">VALUE_FORMAT</span><span style="color: #990000">=</span><span style="color: #FF0000">'JSON'</span><span style="color: #990000">);</span>
+
+ksql<span style="color: #990000">&gt;</span> SET <span style="color: #FF0000">'auto.offset.reset'</span> <span style="color: #990000">=</span> <span style="color: #FF0000">'earliest'</span><span style="color: #990000">;</span>
+
+ksql<span style="color: #990000">&gt;</span> SELECT text FROM twitter_raw LIMIT <span style="color: #993399">1</span><span style="color: #990000">;</span>
+
+ksql<span style="color: #990000">&gt;</span> DROP stream twitter_raw<span style="color: #990000">;</span>
+
+ksql<span style="color: #990000">&gt;</span> CREATE STREAM twitter_raw <span style="color: #990000">(</span>CreatedAt bigint<span style="color: #990000">,</span>Id bigint<span style="color: #990000">,</span> Text VARCHAR<span style="color: #990000">,</span> SOURCE VARCHAR<span style="color: #990000">,</span> Truncated VARCHAR<span style="color: #990000">,</span> InReplyToStatusId VARCHAR<span style="color: #990000">,</span> InReplyToUserId VARCHAR<span style="color: #990000">,</span> InReplyToScreenName VARCHAR<span style="color: #990000">,</span> GeoLocation VARCHAR<span style="color: #990000">,</span> Place VARCHAR<span style="color: #990000">,</span> Favorited VARCHAR<span style="color: #990000">,</span> Retweeted VARCHAR<span style="color: #990000">,</span> FavoriteCount VARCHAR<span style="color: #990000">,</span> User VARCHAR<span style="color: #990000">,</span> Retweet VARCHAR<span style="color: #990000">,</span> Contributors VARCHAR<span style="color: #990000">,</span> RetweetCount VARCHAR<span style="color: #990000">,</span> RetweetedByMe VARCHAR<span style="color: #990000">,</span> CurrentUserRetweetId VARCHAR<span style="color: #990000">,</span> PossiblySensitive VARCHAR<span style="color: #990000">,</span> Lang VARCHAR<span style="color: #990000">,</span> WithheldInCountries VARCHAR<span style="color: #990000">,</span> HashtagEntities VARCHAR<span style="color: #990000">,</span> UserMentionEntities VARCHAR<span style="color: #990000">,</span> MediaEntities VARCHAR<span style="color: #990000">,</span> SymbolEntities VARCHAR<span style="color: #990000">,</span> URLEntities VARCHAR<span style="color: #990000">)</span> WITH <span style="color: #990000">(</span><span style="color: #009900">KAFKA_TOPIC</span><span style="color: #990000">=</span><span style="color: #FF0000">'twitter_json_01'</span><span style="color: #990000">,</span><span style="color: #009900">VALUE_FORMAT</span><span style="color: #990000">=</span><span style="color: #FF0000">'JSON'</span><span style="color: #990000">);</span>
+
+ksql<span style="color: #990000">&gt;</span> SELECT TIMESTAMPTOSTRING<span style="color: #990000">(</span>CreatedAt<span style="color: #990000">,</span> <span style="color: #FF0000">'yyyy-MM-dd HH:mm:ss.SSS'</span><span style="color: #990000">)</span> AS CreatedAt<span style="color: #990000">,\</span>
+EXTRACTJSONFIELD<span style="color: #990000">(</span>user<span style="color: #990000">,</span><span style="color: #FF0000">'$.ScreenName'</span><span style="color: #990000">)</span> as ScreenName<span style="color: #990000">,</span>Text <span style="color: #990000">\</span>
+FROM twitter_raw<span style="color: #990000">;</span>
+
+ksql<span style="color: #990000">&gt;</span> SELECT TIMESTAMPTOSTRING<span style="color: #990000">(</span>CreatedAt<span style="color: #990000">,</span> <span style="color: #FF0000">'yyyy-MM-dd HH:mm:ss.SSS'</span><span style="color: #990000">)</span> AS CreatedAt<span style="color: #990000">,\</span>
+EXTRACTJSONFIELD<span style="color: #990000">(</span>user<span style="color: #990000">,</span><span style="color: #FF0000">'$.ScreenName'</span><span style="color: #990000">)</span> as ScreenName<span style="color: #990000">,</span>Text <span style="color: #990000">\</span>
+FROM twitter_raw <span style="color: #990000">\</span>
+WHERE LCASE<span style="color: #990000">(</span>hashtagentities<span style="color: #990000">)</span> LIKE <span style="color: #FF0000">'%a%'</span> OR <span style="color: #990000">\</span>
+LCASE<span style="color: #990000">(</span>hashtagentities<span style="color: #990000">)</span> LIKE <span style="color: #FF0000">'%kafka%'</span><span style="color: #990000">;</span>
 
 
-bin/kafka-console-consumer --bootstrap-server localhost<span style="color: #990000">:</span><span style="color: #993399">9092</span> --from-beginning --topic twitter_json_01
 
-kafka <span style="font-weight: bold"><span style="color: #0000FF">test</span></span> 입니다<span style="color: #990000">.</span>
-https<span style="color: #990000">:</span>//www<span style="color: #990000">.</span>confluent<span style="color: #990000">.</span>io/blog/using-ksql-to-analyse-query-and-transform-data-in-kafka
-<span style="font-style: italic"><span style="color: #9A1900">#tedwon #kafka</span></span></tt></pre></div></div>
+ksql<span style="color: #990000">&gt;</span> CREATE STREAM twitter AS <span style="color: #990000">\</span>
+SELECT TIMESTAMPTOSTRING<span style="color: #990000">(</span>CreatedAt<span style="color: #990000">,</span> <span style="color: #FF0000">'yyyy-MM-dd HH:mm:ss.SSS'</span><span style="color: #990000">)</span> AS CreatedAt<span style="color: #990000">,\</span>
+EXTRACTJSONFIELD<span style="color: #990000">(</span>user<span style="color: #990000">,</span><span style="color: #FF0000">'$.Name'</span><span style="color: #990000">)</span> AS user_Name<span style="color: #990000">,\</span>
+EXTRACTJSONFIELD<span style="color: #990000">(</span>user<span style="color: #990000">,</span><span style="color: #FF0000">'$.ScreenName'</span><span style="color: #990000">)</span> AS user_ScreenName<span style="color: #990000">,\</span>
+EXTRACTJSONFIELD<span style="color: #990000">(</span>user<span style="color: #990000">,</span><span style="color: #FF0000">'$.Location'</span><span style="color: #990000">)</span> AS user_Location<span style="color: #990000">,\</span>
+EXTRACTJSONFIELD<span style="color: #990000">(</span>user<span style="color: #990000">,</span><span style="color: #FF0000">'$.Description'</span><span style="color: #990000">)</span> AS  user_Description<span style="color: #990000">,\</span>
+Text<span style="color: #990000">,</span>hashtagentities<span style="color: #990000">,</span>lang <span style="color: #990000">\</span>
+FROM twitter_raw <span style="color: #990000">;</span>
+
+ksql<span style="color: #990000">&gt;</span> DESCRIBE twitter<span style="color: #990000">;</span>
+
+ksql<span style="color: #990000">&gt;</span> SELECT CREATEDAT<span style="color: #990000">,</span> USER_NAME<span style="color: #990000">,</span> TEXT <span style="color: #990000">\</span>
+FROM TWITTER <span style="color: #990000">\</span>
+WHERE TEXT LIKE <span style="color: #FF0000">'%kafka%'</span><span style="color: #990000">;</span>
+
+ksql<span style="color: #990000">&gt;</span> SELECT CREATEDAT<span style="color: #990000">,</span> USER_NAME<span style="color: #990000">,</span> TEXT <span style="color: #990000">\</span>
+FROM TWITTER <span style="color: #990000">\</span>
+WHERE TEXT LIKE <span style="color: #FF0000">'%KSQL%'</span><span style="color: #990000">;</span>
+
+ksql<span style="color: #990000">&gt;</span> SELECT user_screenname<span style="color: #990000">,</span> COUNT<span style="color: #990000">(*)</span> <span style="color: #990000">\</span>
+FROM twitter WINDOW TUMBLING <span style="color: #990000">(</span>SIZE <span style="color: #993399">1</span> HOUR<span style="color: #990000">)</span> <span style="color: #990000">\</span>
+GROUP BY user_screenname HAVING COUNT<span style="color: #990000">(*)</span> <span style="color: #990000">&gt;</span> <span style="color: #993399">1</span><span style="color: #990000">;</span>
+
+ksql<span style="color: #990000">&gt;</span> CREATE TABLE user_tweet_count AS <span style="color: #990000">\</span>
+SELECT user_screenname<span style="color: #990000">,</span> count<span style="color: #990000">(*)</span> AS  tweet_count <span style="color: #990000">\</span>
+FROM twitter WINDOW TUMBLING <span style="color: #990000">(</span>SIZE <span style="color: #993399">1</span> HOUR<span style="color: #990000">)</span> <span style="color: #990000">\</span>
+GROUP BY user_screenname <span style="color: #990000">;</span>
+
+ksql<span style="color: #990000">&gt;</span> DESCRIBE user_tweet_count<span style="color: #990000">;</span>
+
+ksql<span style="color: #990000">&gt;</span> SELECT TIMESTAMPTOSTRING<span style="color: #990000">(</span>ROWTIME<span style="color: #990000">,</span> <span style="color: #FF0000">'yyyy-MM-dd HH:mm:ss.SSS'</span><span style="color: #990000">)</span> <span style="color: #990000">,</span> <span style="color: #990000">\</span>
+ROWKEY<span style="color: #990000">,</span> USER_SCREENNAME<span style="color: #990000">,</span> TWEET_COUNT <span style="color: #990000">\</span>
+FROM user_tweet_count <span style="color: #990000">\</span>
+WHERE <span style="color: #009900">USER_SCREENNAME</span><span style="color: #990000">=</span> <span style="color: #FF0000">'tedwon'</span><span style="color: #990000">;</span>
+
+ksql<span style="color: #990000">&gt;</span> CREATE TABLE USER_TWEET_COUNT_DISPLAY AS <span style="color: #990000">\</span>
+SELECT TIMESTAMPTOSTRING<span style="color: #990000">(</span>ROWTIME<span style="color: #990000">,</span> <span style="color: #FF0000">'yyyy-MM-dd HH:mm:ss.SSS'</span><span style="color: #990000">)</span> AS WINDOW_START <span style="color: #990000">,\</span>
+USER_SCREENNAME<span style="color: #990000">,</span> TWEET_COUNT <span style="color: #990000">\</span>
+FROM user_tweet_count<span style="color: #990000">;</span>
+
+ksql<span style="color: #990000">&gt;</span> SELECT WINDOW_START <span style="color: #990000">,</span>  USER_SCREENNAME<span style="color: #990000">,</span> TWEET_COUNT <span style="color: #990000">\</span>
+FROM USER_TWEET_COUNT_DISPLAY WHERE TWEET_COUNT<span style="color: #990000">&gt;</span> <span style="color: #993399">20</span><span style="color: #990000">;</span></tt></pre></div></div>
 </section>
 <section class="slide">
 <h2>Tumbling Time Windows</h2>
@@ -3378,6 +3656,14 @@ Announced at Red Hat Summit 2018
 <ul>
 <li class="">
 <a href="https://developers.redhat.com/blog/2018/05/07/announcing-amq-streams-apache-kafka-on-openshift/">https://developers.redhat.com/blog/2018/05/07/announcing-amq-streams-apache-kafka-on-openshift/</a>
+</li>
+</ul>
+</li>
+<li class="">
+Red Hat JBoss AMQ and Apache Kafka : which to use ?
+<ul>
+<li class="">
+<a href="https://www.slideshare.net/paolopat/red-hat-jboss-amq-and-apache-kafka-which-to-use">https://www.slideshare.net/paolopat/red-hat-jboss-amq-and-apache-kafka-which-to-use</a>
 </li>
 </ul>
 </li>
@@ -3446,6 +3732,14 @@ Apache Kafka: Turning your architecture inside out <a href="https://speakerdeck.
 </li>
 <li class="">
 <a href="https://www.confluent.io/">https://www.confluent.io/</a>
+</li>
+<li class="">
+Hands-free Kafka Replication: A lesson in operational simplicity
+<ul>
+<li class="">
+<a href="https://www.confluent.io/blog/hands-free-kafka-replication-a-lesson-in-operational-simplicity/">https://www.confluent.io/blog/hands-free-kafka-replication-a-lesson-in-operational-simplicity/</a>
+</li>
+</ul>
 </li>
 </ul>
 </section>
