@@ -1,4 +1,6 @@
-== Kafka is
+:toc:
+
+== Apache Kafka is
 
 [incremental="true"]
 * Messaging System
@@ -6,8 +8,11 @@
 * Distributed Publish-Subscribe Messaging System
 * Distributed Streaming Platform
 * Data Hub
+* Data Platform
 
 == Before Kafka
+
+* 열심히 일할 수록...
 
 [incremental="true"]
 image::images/kafka_00.png[title="Kafka"]
@@ -25,7 +30,9 @@ image::images/kafka_01.png[title="Kafka"]
 [incremental="true"]
 image::images/kafka_02.png[title="Kafka"]
 
-== Kafka is
+* Event-driven architecture
+
+== Apache Kafka is
 
 [incremental="true"]
 * Pub-sub 방식의 고성능 Distributed Messaging System
@@ -63,15 +70,25 @@ image::https://t1.daumcdn.net/cfile/tistory/217D7945550917BD0B[title="Kafka Cons
 
 [incremental="true"]
 * 사용하기 쉬운 API, 설정 옵션 제공
+* Messaging system의 Queue와 Topic 이 합쳐진 개념
+* Topic 으로 통일
 * Zero-copy 방식으로 고성능 읽기 기능 제공
 ** https://docs.oracle.com/javase/8/docs/api/java/nio/channels/FileChannel.html#transferTo-long-long-java.nio.channels.WritableByteChannel-[java.nio.channels
 Class FileChannel.transferTo()]
+** https://github.com/apache/kafka/blob/trunk/clients/src/main/java/org/apache/kafka/common/record/FileRecords.java#L283-L285[FileRecords.java], https://github.com/apache/kafka/blob/trunk/clients/src/main/java/org/apache/kafka/common/network/TransportLayer.java#L101-L115[TransportLayer.java], https://github.com/apache/kafka/blob/trunk/clients/src/main/java/org/apache/kafka/common/network/PlaintextTransportLayer.java#L214-L217[PlaintextTransportLayer.java]
 * Scale-out 하기 좋은 시스템
 * Batch 단위 전송, Compression 기능 제공
+** GZIP and Snappy
+
+== Kafka Overview
+
+[incremental="true"]
 * Producer측에서 partitioner를 구현해 분산 저장 조절 가능
+** DefaultPartitioner를 사용하면 랜덤
 * Kafka + Processing 구조로 활용
 ** Storm, Spark Streaming
 * Streaming 처리 KSQL 제공
+* 로그 데이터 유지하면서 Upgrade 가능
 
 == High-level Architecture
 
@@ -80,17 +97,16 @@ image::images/kafka_04.png[title="Kafka"]
 
 == Producing & Consuming
 
+* 네모 박스 하나가 하나의 process
+* 화살표선 하나가 하나의 thread
+
 [incremental="true"]
 image::images/kafka_06.png[title="Kafka"]
-
-* 네모 박스 하나가 하나의 process
 
 == Producing & Consuming
 
 [incremental="true"]
 image::images/kafka_05.png[title="Kafka"]
-
-* 화살표선 하나가 하나의 thread
 
 == Kafka Log
 
@@ -103,6 +119,8 @@ image::http://kafka.apache.org/11/images/kafka_log.png[title="Kafka Overview"]
 ** https://thehoard.blog/how-kafkas-storage-internals-work-3a29b02e026
 
 * kafka.tools.DumpLogSegments since 1.1.0
+** https://github.com/apache/kafka/blob/trunk/core/src/main/scala/kafka/tools/DumpLogSegments.scala
+** https://github.com/apache/kafka/blob/trunk/core/src/test/scala/unit/kafka/tools/DumpLogSegmentsTest.scala
 
 [source,sh]
 ----
@@ -113,7 +131,7 @@ offset: 3065011416 position: 0 isvalid: true payloadsize: 2820 magic: 1 compress
 offset: 3065011417 position: 1779 isvalid: true payloadsize: 2244 magic: 1 compresscodec: NoCompressionCodec crc: 151590202 payload: {"name": "Wale", msg: "Starving."}
 ----
 
-== Latest Kafka
+== Latest Kafka (version 1.x)
 
 [incremental="true"]
 image::http://kafka.apache.org/11/images/kafka-apis.png[title="Kafka Overview"]

@@ -2,8 +2,8 @@
 :author: Jong Seok Won
 :email: <iamtedwon@gmail.com>
 :description: All about Apache Kafka.
-:revdate: 2018-07-27
-:revnumber: 0.8
+:revdate: 2018-07-28
+:revnumber: 0.9
 ///////////////////////
 	Themes that you can choose includes:
 	web-2.0, swiss, neon beamer

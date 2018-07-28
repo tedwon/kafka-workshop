@@ -7,3 +7,5 @@
 * https://www.confluent.io/
 * Hands-free Kafka Replication: A lesson in operational simplicity
 ** https://www.confluent.io/blog/hands-free-kafka-replication-a-lesson-in-operational-simplicity/
+* http://torquebox.org/documentation/1.0.0/images/messaging-queues-vs-topics.png
+* http://www.keil.com/pack/doc/CMSIS_Dev/RTOS2/html/group__CMSIS__RTOS__SemaphoreMgmt.html

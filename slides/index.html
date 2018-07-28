@@ -8,7 +8,7 @@
         <meta name="viewport" content="width=1024, user-scalable=no">
         <meta name="author" content="Jong Seok Won" />
         <meta name="generator" content="AsciiDoc 8.6.10" />
-        <meta name="presdate" content="2018-07-27" />
+        <meta name="presdate" content="2018-07-28" />
         
         <!-- Core and extension CSS files -->
 <style type="text/css">
@@ -2535,10 +2535,10 @@ This module splits a long slide into multiple slides.
 <section class="slide" id="title-slide">
         <h1>Apache Kafka</h1>
         <h3>Jong Seok Won</h3>
-        <h4>2018-07-27</h4>
+        <h4>2018-07-28</h4>
 </section>
 <section class="slide">
-<h2>Kafka is</h2>
+<h2>Apache Kafka is</h2>
 <ul>
 <li class=" slide">
 Messaging System
@@ -2555,10 +2555,18 @@ Distributed Streaming Platform
 <li class=" slide">
 Data Hub
 </li>
+<li class=" slide">
+Data Platform
+</li>
 </ul>
 </section>
 <section class="slide">
 <h2>Before Kafka</h2>
+<ul>
+<li class="">
+열심히 일할 수록&#8230;
+</li>
+</ul>
 <img src="images/kafka_00.png" alt="images/kafka_00.png" class="slide"/>
 </section>
 <section class="slide">
@@ -2573,9 +2581,14 @@ Data Hub
 <section class="slide">
 <h2>Kafka High-level View</h2>
 <img src="images/kafka_02.png" alt="images/kafka_02.png" class="slide"/>
+<ul>
+<li class="">
+Event-driven architecture
+</li>
+</ul>
 </section>
 <section class="slide">
-<h2>Kafka is</h2>
+<h2>Apache Kafka is</h2>
 <ul>
 <li class=" slide">
 Pub-sub 방식의 고성능 Distributed Messaging System
@@ -2640,11 +2653,20 @@ Scaled out architecture from the beginning
 사용하기 쉬운 API, 설정 옵션 제공
 </li>
 <li class=" slide">
+Messaging system의 Queue와 Topic 이 합쳐진 개념
+</li>
+<li class=" slide">
+Topic 으로 통일
+</li>
+<li class=" slide">
 Zero-copy 방식으로 고성능 읽기 기능 제공
 <ul>
 <li class="">
 <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/channels/FileChannel.html#transferTo-long-long-java.nio.channels.WritableByteChannel-">java.nio.channels
 Class FileChannel.transferTo()</a>
+</li>
+<li class="">
+<a href="https://github.com/apache/kafka/blob/trunk/clients/src/main/java/org/apache/kafka/common/record/FileRecords.java#L283-L285">FileRecords.java</a>, <a href="https://github.com/apache/kafka/blob/trunk/clients/src/main/java/org/apache/kafka/common/network/TransportLayer.java#L101-L115">TransportLayer.java</a>, <a href="https://github.com/apache/kafka/blob/trunk/clients/src/main/java/org/apache/kafka/common/network/PlaintextTransportLayer.java#L214-L217">PlaintextTransportLayer.java</a>
 </li>
 </ul>
 </li>
@@ -2653,9 +2675,24 @@ Scale-out 하기 좋은 시스템
 </li>
 <li class=" slide">
 Batch 단위 전송, Compression 기능 제공
+<ul>
+<li class="">
+GZIP and Snappy
 </li>
+</ul>
+</li>
+</ul>
+</section>
+<section class="slide">
+<h2>Kafka Overview</h2>
+<ul>
 <li class=" slide">
 Producer측에서 partitioner를 구현해 분산 저장 조절 가능
+<ul>
+<li class="">
+DefaultPartitioner를 사용하면 랜덤
+</li>
+</ul>
 </li>
 <li class=" slide">
 Kafka + Processing 구조로 활용
@@ -2668,6 +2705,9 @@ Storm, Spark Streaming
 <li class=" slide">
 Streaming 처리 KSQL 제공
 </li>
+<li class=" slide">
+로그 데이터 유지하면서 Upgrade 가능
+</li>
 </ul>
 </section>
 <section class="slide">
@@ -2676,21 +2716,19 @@ Streaming 처리 KSQL 제공
 </section>
 <section class="slide">
 <h2>Producing &amp; Consuming</h2>
-<img src="images/kafka_06.png" alt="images/kafka_06.png" class="slide"/>
 <ul>
 <li class="">
 네모 박스 하나가 하나의 process
 </li>
-</ul>
-</section>
-<section class="slide">
-<h2>Producing &amp; Consuming</h2>
-<img src="images/kafka_05.png" alt="images/kafka_05.png" class="slide"/>
-<ul>
 <li class="">
 화살표선 하나가 하나의 thread
 </li>
 </ul>
+<img src="images/kafka_06.png" alt="images/kafka_06.png" class="slide"/>
+</section>
+<section class="slide">
+<h2>Producing &amp; Consuming</h2>
+<img src="images/kafka_05.png" alt="images/kafka_05.png" class="slide"/>
 </section>
 <section class="slide">
 <h2>Kafka Log</h2>
@@ -2709,6 +2747,14 @@ How Kafka’s Storage Internals Work
 </li>
 <li class="">
 kafka.tools.DumpLogSegments since 1.1.0
+<ul>
+<li class="">
+<a href="https://github.com/apache/kafka/blob/trunk/core/src/main/scala/kafka/tools/DumpLogSegments.scala">https://github.com/apache/kafka/blob/trunk/core/src/main/scala/kafka/tools/DumpLogSegments.scala</a>
+</li>
+<li class="">
+<a href="https://github.com/apache/kafka/blob/trunk/core/src/test/scala/unit/kafka/tools/DumpLogSegmentsTest.scala">https://github.com/apache/kafka/blob/trunk/core/src/test/scala/unit/kafka/tools/DumpLogSegmentsTest.scala</a>
+</li>
+</ul>
 </li>
 </ul>
 <div class="listingblock">
@@ -2723,7 +2769,7 @@ offset<span style="color: #990000">:</span> <span style="color: #993399">3065011
 offset<span style="color: #990000">:</span> <span style="color: #993399">3065011417</span> position<span style="color: #990000">:</span> <span style="color: #993399">1779</span> isvalid<span style="color: #990000">:</span> <span style="font-weight: bold"><span style="color: #0000FF">true</span></span> payloadsize<span style="color: #990000">:</span> <span style="color: #993399">2244</span> magic<span style="color: #990000">:</span> <span style="color: #993399">1</span> compresscodec<span style="color: #990000">:</span> NoCompressionCodec crc<span style="color: #990000">:</span> <span style="color: #993399">151590202</span> payload<span style="color: #990000">:</span> {<span style="color: #FF0000">"name"</span><span style="color: #990000">:</span> <span style="color: #FF0000">"Wale"</span><span style="color: #990000">,</span> msg<span style="color: #990000">:</span> <span style="color: #FF0000">"Starving."</span>}</tt></pre></div></div>
 </section>
 <section class="slide">
-<h2>Latest Kafka</h2>
+<h2>Latest Kafka (version 1.x)</h2>
 <img src="http://kafka.apache.org/11/images/kafka-apis.png" alt="http://kafka.apache.org/11/images/kafka-apis.png" class="slide"/>
 </section>
 <section class="slide">
@@ -2803,7 +2849,13 @@ Confluent Open Source 4.1.1
 <h3 id="_prerequisites">Prerequisites</h3>
 <ul>
 <li class="">
+Linux, Mac
+</li>
+<li class="">
 JDK 8
+</li>
+<li class="">
+Kafka 1.1.1
 </li>
 </ul>
 </div>
@@ -2941,7 +2993,7 @@ Zookeeper 가 필요한 이유
 Distributed Consensus Algorithm 구현 필요
 </li>
 <li class="">
-시스템 간의 락, 설정 공유, 리더 선출, atomic 한 연산등 구현이 필요
+시스템 간의 락(semaphore, mutex), 설정 공유, 리더 선출, atomic 한 연산등 구현이 필요
 <ul>
 <li class="">
 <a href="https://www.confluent.io/blog/distributed-consensus-reloaded-apache-zookeeper-and-replication-in-kafka/">https://www.confluent.io/blog/distributed-consensus-reloaded-apache-zookeeper-and-replication-in-kafka/</a>
@@ -3069,9 +3121,19 @@ jps <span style="color: #990000">|</span> grep server<span style="color: #990000
 <ul>
 <li class="">
 <a href="http://kafka.apache.org/11/documentation/streams/quickstart">http://kafka.apache.org/11/documentation/streams/quickstart</a>
-</li>
+<ul>
 <li class="">
 링크로 이동해서 Kafka Stream 기능을 실습해보세요.
+</li>
+</ul>
+</li>
+<li class="">
+다음의 Kafka Connect Twitter 실습을 참고하세요.
+<ul>
+<li class="">
+<a href="https://www.confluent.io/blog/using-ksql-to-analyse-query-and-transform-data-in-kafka">https://www.confluent.io/blog/using-ksql-to-analyse-query-and-transform-data-in-kafka</a>
+</li>
+</ul>
 </li>
 </ul>
 </section>
@@ -3152,7 +3214,13 @@ Kafka version : 1.1.1-cp1 (org.apache.kafka.common.utils.AppInfoParser)
 <h3 id="_prerequisites_2">Prerequisites</h3>
 <ul>
 <li class="">
+Linux, Mac
+</li>
+<li class="">
 JDK 8
+</li>
+<li class="">
+Confluent Open Source 4.1.1
 </li>
 </ul>
 </div>
@@ -3422,7 +3490,13 @@ Kafka version : 1.1.1-cp1 (org.apache.kafka.common.utils.AppInfoParser)
 <h3 id="_prerequisites_3">Prerequisites</h3>
 <ul>
 <li class="">
+Linux, Mac
+</li>
+<li class="">
 JDK 8
+</li>
+<li class="">
+Confluent Open Source 4.1.1
 </li>
 </ul>
 </div>
@@ -3740,6 +3814,12 @@ Hands-free Kafka Replication: A lesson in operational simplicity
 <a href="https://www.confluent.io/blog/hands-free-kafka-replication-a-lesson-in-operational-simplicity/">https://www.confluent.io/blog/hands-free-kafka-replication-a-lesson-in-operational-simplicity/</a>
 </li>
 </ul>
+</li>
+<li class="">
+<a href="http://torquebox.org/documentation/1.0.0/images/messaging-queues-vs-topics.png">http://torquebox.org/documentation/1.0.0/images/messaging-queues-vs-topics.png</a>
+</li>
+<li class="">
+<a href="http://www.keil.com/pack/doc/CMSIS_Dev/RTOS2/html/group">http://www.keil.com/pack/doc/CMSIS_Dev/RTOS2/html/group</a><em>CMSIS</em>RTOS__SemaphoreMgmt.html
 </li>
 </ul>
 </section>

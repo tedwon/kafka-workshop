@@ -1,3 +1,5 @@
+:toc:
+
 == Kafka QuickStart
 
 * Kafka 실습
@@ -7,7 +9,9 @@
 
 === Prerequisites
 
+* Linux, Mac
 * JDK 8
+* Kafka 1.1.1
 
 == Download Kafka
 
@@ -93,7 +97,7 @@ get /brokers/topics/test/partitions/0/state
 
 * Zookeeper 가 필요한 이유
 * Distributed Consensus Algorithm 구현 필요
-* 시스템 간의 락, 설정 공유, 리더 선출, atomic 한 연산등 구현이 필요
+* 시스템 간의 락(semaphore, mutex), 설정 공유, 리더 선출, atomic 한 연산등 구현이 필요
 ** https://www.confluent.io/blog/distributed-consensus-reloaded-apache-zookeeper-and-replication-in-kafka/
 ** https://blog.seulgi.kim/2014/05/zookeeper-1-znode-zookeeper-data.html
 ** https://blog.seulgi.kim/2014/05/zookeeper-0-zookeepr.html
@@ -177,7 +181,9 @@ jps | grep server.properties | awk '{print $1}' | xargs kill -15
 == Use Kafka Streams to process data
 
 * http://kafka.apache.org/11/documentation/streams/quickstart
-* 링크로 이동해서 Kafka Stream 기능을 실습해보세요.
+** 링크로 이동해서 Kafka Stream 기능을 실습해보세요.
+* 다음의 Kafka Connect Twitter 실습을 참고하세요.
+** https://www.confluent.io/blog/using-ksql-to-analyse-query-and-transform-data-in-kafka
 
 
 == Kafka Connect
