@@ -55,7 +55,7 @@ bin/kafka-server-start.sh config/server.properties
 == Create a topic
 
 * test topic을 생성합니다.
-* Note: parition 1 이라면 메세지 순서가 보장된다. (당연한 소리)
+* Note: Partition 1 이라면 메세지 순서가 보장된다. (당연한 소리)
 
 [source,sh]
 ----

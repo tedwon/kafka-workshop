@@ -3,7 +3,7 @@
 == Twitter Data in Apache Kafka
 
 * Twitter 데이터 소스를 이용한 Kafka 활용 예제 실습
-* https://www.confluent.io/blog/using-ksql-to-analyse-query-and-transform-data-in-kafka
+** https://www.confluent.io/blog/using-ksql-to-analyse-query-and-transform-data-in-kafka
 * This hands-on is based on Confluent Open Source 4.1.1
 * Kafka version : 1.1.1-cp1 (org.apache.kafka.common.utils.AppInfoParser)
 
@@ -29,7 +29,8 @@ cd confluent-4.1.1
 
 * Confluent 설정 업데이트 후 실행합니다.
 ** etc/kafka/server.properties 에 hostname을 명시해줍니다.
-* Introducing the Confluent CLI | Screencast https://www.youtube.com/watch?v=ZKqBptBHZTg
+* Introducing the Confluent CLI
+** https://www.youtube.com/watch?v=ZKqBptBHZTg
 
 [source,sh]
 ----
@@ -82,9 +83,36 @@ bin/confluent start connect
 
 == Load Kafka Connect Twitter
 
+* 임의이 경로에 twitter-source.json 파일을 생성합니다.
+** 예: https://gist.githubusercontent.com/manjuapu/416bec327cf8eeb073615e866b90e8fd/raw/be442df35afac333eae0f7357672110553e6f720/twitter-source
+
+[source,json]
+----
+{
+ "name": "twitter_source_json_01",
+ "config": {
+   "connector.class": "com.github.jcustenborder.kafka.connect.twitter.TwitterSourceConnector",
+   "twitter.oauth.accessToken": "xxxx",
+   "twitter.oauth.consumerSecret": "xxxxx",
+   "twitter.oauth.consumerKey": "xxxx",
+   "twitter.oauth.accessTokenSecret": "xxxxx",
+   "kafka.delete.topic": "twitter_deletes_json_01",
+   "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+   "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+   "value.converter.schemas.enable": false,
+   "key.converter.schemas.enable": false,
+   "kafka.status.topic": "twitter_json_01",
+   "process.deletes": true,
+   "filter.keywords": "rickastley,kafka,ksql,rmoff"
+ }
+}
+----
+
+== Load Kafka Connect Twitter
+
 [source,sh]
 ----
-bin/confluent load twitter_source -d /Users/tedwon/kafka-connect-twitter/twitter-source.json
+bin/confluent load twitter_source -d /tmp/twitter-source.json
 
 bin/kafka-topics --zookeeper localhost:2181 --list
 twitter_json_01

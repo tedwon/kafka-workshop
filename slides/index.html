@@ -3,7 +3,7 @@
 <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Apache Kafka</title>
+        <title>Apache Kafka Workshop</title>
         <meta name="description" content="All about Apache Kafka." />
         <meta name="viewport" content="width=1024, user-scalable=no">
         <meta name="author" content="Jong Seok Won" />
@@ -2533,7 +2533,7 @@ This module splits a long slide into multiple slides.
 </head>
 <body class="deck-container">
 <section class="slide" id="title-slide">
-        <h1>Apache Kafka</h1>
+        <h1>Apache Kafka Workshop</h1>
         <h3>Jong Seok Won</h3>
         <h4>2018-07-28</h4>
 </section>
@@ -2542,6 +2542,11 @@ This module splits a long slide into multiple slides.
 <ul>
 <li class=" slide">
 Messaging System
+<ul>
+<li class="">
+Note: 일반적으로 Messaging System에는 Queue와 Topic 방식이 존재, 예) JMS
+</li>
+</ul>
 </li>
 <li class=" slide">
 Distributed Messaging System
@@ -2556,7 +2561,7 @@ Distributed Streaming Platform
 Data Hub
 </li>
 <li class=" slide">
-Data Platform
+<strong>Data Platform</strong>
 </li>
 </ul>
 </section>
@@ -2564,7 +2569,7 @@ Data Platform
 <h2>Before Kafka</h2>
 <ul>
 <li class="">
-열심히 일할 수록&#8230;
+열심히 일 할수록&#8230;
 </li>
 </ul>
 <img src="images/kafka_00.png" alt="images/kafka_00.png" class="slide"/>
@@ -2581,11 +2586,23 @@ Data Hub
 <section class="slide">
 <h2>Kafka High-level View</h2>
 <img src="images/kafka_02.png" alt="images/kafka_02.png" class="slide"/>
+</section>
+<section class="slide">
+<h2>Kafka High-level View</h2>
 <ul>
+<li class="">
+<a href="https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern">Publish–subscribe pattern</a>
+<ul>
+<li class="">
+Messaging system의 topic에 적용되는 개념
+</li>
+</ul>
+</li>
 <li class="">
 Event-driven architecture
 </li>
 </ul>
+<img src="images/kafka_02.png" alt="images/kafka_02.png" class=""/>
 </section>
 <section class="slide">
 <h2>Apache Kafka is</h2>
@@ -2927,7 +2944,7 @@ bin/kafka-server-start<span style="color: #990000">.</span>sh config/server<span
 test topic을 생성합니다.
 </li>
 <li class="">
-Note: parition 1 이라면 메세지 순서가 보장된다. (당연한 소리)
+Note: Partition 1 이라면 메세지 순서가 보장된다. (당연한 소리)
 </li>
 </ul>
 <div class="listingblock">
@@ -3475,9 +3492,11 @@ KSQL Syntax Reference <a href="https://docs.confluent.io/current/ksql/docs/synta
 <ul>
 <li class="">
 Twitter 데이터 소스를 이용한 Kafka 활용 예제 실습
-</li>
+<ul>
 <li class="">
 <a href="https://www.confluent.io/blog/using-ksql-to-analyse-query-and-transform-data-in-kafka">https://www.confluent.io/blog/using-ksql-to-analyse-query-and-transform-data-in-kafka</a>
+</li>
+</ul>
 </li>
 <li class="">
 This hands-on is based on Confluent Open Source 4.1.1
@@ -3534,7 +3553,12 @@ etc/kafka/server.properties 에 hostname을 명시해줍니다.
 </ul>
 </li>
 <li class="">
-Introducing the Confluent CLI | Screencast <a href="https://www.youtube.com/watch?v=ZKqBptBHZTg">https://www.youtube.com/watch?v=ZKqBptBHZTg</a>
+Introducing the Confluent CLI
+<ul>
+<li class="">
+<a href="https://www.youtube.com/watch?v=ZKqBptBHZTg">https://www.youtube.com/watch?v=ZKqBptBHZTg</a>
+</li>
+</ul>
 </li>
 </ul>
 <div class="listingblock">
@@ -3607,12 +3631,48 @@ bin/confluent start connect</tt></pre></div></div>
 </section>
 <section class="slide">
 <h2>Load Kafka Connect Twitter</h2>
+<ul>
+<li class="">
+임의이 경로에 twitter-source.json 파일을 생성합니다.
+<ul>
+<li class="">
+예: <a href="https://gist.githubusercontent.com/manjuapu/416bec327cf8eeb073615e866b90e8fd/raw/be442df35afac333eae0f7357672110553e6f720/twitter-source">https://gist.githubusercontent.com/manjuapu/416bec327cf8eeb073615e866b90e8fd/raw/be442df35afac333eae0f7357672110553e6f720/twitter-source</a>
+</li>
+</ul>
+</li>
+</ul>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
-<pre><tt>bin/confluent load twitter_source -d /Users/tedwon/kafka-connect-twitter/twitter-source<span style="color: #990000">.</span>json
+<pre><tt><span style="color: #990000">{</span>
+ "name": "<span style="color: #FF0000">twitter_source_json_01</span>"<span style="color: #990000">,</span>
+ "config": <span style="color: #990000">{</span>
+   "connector.class": "<span style="color: #FF0000">com.github.jcustenborder.kafka.connect.twitter.TwitterSourceConnector</span>"<span style="color: #990000">,</span>
+   "twitter.oauth.accessToken": "<span style="color: #FF0000">xxxx</span>"<span style="color: #990000">,</span>
+   "twitter.oauth.consumerSecret": "<span style="color: #FF0000">xxxxx</span>"<span style="color: #990000">,</span>
+   "twitter.oauth.consumerKey": "<span style="color: #FF0000">xxxx</span>"<span style="color: #990000">,</span>
+   "twitter.oauth.accessTokenSecret": "<span style="color: #FF0000">xxxxx</span>"<span style="color: #990000">,</span>
+   "kafka.delete.topic": "<span style="color: #FF0000">twitter_deletes_json_01</span>"<span style="color: #990000">,</span>
+   "value.converter": "<span style="color: #FF0000">org.apache.kafka.connect.json.JsonConverter</span>"<span style="color: #990000">,</span>
+   "key.converter": "<span style="color: #FF0000">org.apache.kafka.connect.json.JsonConverter</span>"<span style="color: #990000">,</span>
+   "value.converter.schemas.enable": <span style="font-weight: bold"><span style="color: #0000FF">false</span></span><span style="color: #990000">,</span>
+   "key.converter.schemas.enable": <span style="font-weight: bold"><span style="color: #0000FF">false</span></span><span style="color: #990000">,</span>
+   "kafka.status.topic": "<span style="color: #FF0000">twitter_json_01</span>"<span style="color: #990000">,</span>
+   "process.deletes": <span style="font-weight: bold"><span style="color: #0000FF">true</span></span><span style="color: #990000">,</span>
+   "filter.keywords": "<span style="color: #FF0000">rickastley,kafka,ksql,rmoff</span>"
+ <span style="color: #990000">}</span>
+<span style="color: #990000">}</span></tt></pre></div></div>
+</section>
+<section class="slide">
+<h2>Load Kafka Connect Twitter</h2>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>bin/confluent load twitter_source -d /tmp/twitter-source<span style="color: #990000">.</span>json
 
 bin/kafka-topics --zookeeper localhost<span style="color: #990000">:</span><span style="color: #993399">2181</span> --list
 twitter_json_01</tt></pre></div></div>

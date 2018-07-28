@@ -4,15 +4,16 @@
 
 [incremental="true"]
 * Messaging System
+** Note: 일반적으로 Messaging System에는 Queue와 Topic 방식이 존재, 예) JMS
 * Distributed Messaging System
 * Distributed Publish-Subscribe Messaging System
 * Distributed Streaming Platform
 * Data Hub
-* Data Platform
+* *Data Platform*
 
 == Before Kafka
 
-* 열심히 일할 수록...
+* 열심히 일 할수록...
 
 [incremental="true"]
 image::images/kafka_00.png[title="Kafka"]
@@ -30,7 +31,13 @@ image::images/kafka_01.png[title="Kafka"]
 [incremental="true"]
 image::images/kafka_02.png[title="Kafka"]
 
+== Kafka High-level View
+
+* https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern[Publish–subscribe pattern]
+** Messaging system의 topic에 적용되는 개념
 * Event-driven architecture
+
+image::images/kafka_02.png[title="Kafka"]
 
 == Apache Kafka is
 

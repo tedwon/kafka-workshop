@@ -1,4 +1,5 @@
-= Apache Kafka Workshop
+deck.js Support for Asciidoc
+=============================
 :author: Jong Seok Won
 :email: <iamtedwon@gmail.com>
 :description: All about Apache Kafka.
@@ -42,26 +43,19 @@
 ///////////////////////
 //:count_nested:
 
-include::kafka-overview.adoc[tags=main]
+== Documentation by AsciiDoc
 
-//include::kafka-performance.adoc[tags=main]
+* http://infinispan.org/docs/stable/user_guide/user_guide.html
+* http://undertow.io/undertow-docs/undertow-docs-2.0.0/index.html
 
-//include::kafka-producer.adoc[tags=main]
+== AsciiDoc Maven Plugin
 
-//include::kafka-how-so-fast.adoc[tags=main]
+* https://github.com/undertow-io/undertow-docs
 
-include::kafka-quickstart.adoc[tags=main]
+== AsciiDoc 문법 찾을 때
 
-include::kafka-connect.adoc[tags=main]
+* https://asciidoctor.org/docs/asciidoc-syntax-quick-reference/
 
-include::confluent-quickstart.adoc[tags=main]
+== Example
 
-include::kafka-connect-twitter.adoc[tags=main]
-
-//include::kafka-streams.adoc[tags=main]
-
-//include::kafka-deep-inside.adoc[tags=main]
-
-include::amq-streams.adoc[tags=main]
-
-include::kafka-references.adoc[tags=main]
+* /Users/tedwon/.asciidoc/backends/deckjs/example/
