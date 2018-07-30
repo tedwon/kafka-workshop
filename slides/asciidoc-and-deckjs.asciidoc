@@ -59,3 +59,9 @@ deck.js Support for Asciidoc
 == Example
 
 * /Users/tedwon/.asciidoc/backends/deckjs/example/
+
+== To do
+
+=== resarch asciidoctor-reveal.js
+* https://github.com/asciidoctor/asciidoctor-reveal.js
+* https://revealjs.com/#/
